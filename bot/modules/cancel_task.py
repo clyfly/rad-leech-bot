@@ -1,8 +1,9 @@
 from asyncio import sleep
+from re import search as re_search
 from pyrogram.filters import command, regex
 from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 
-from bot import task_dict, bot, task_dict_lock, OWNER_ID, user_data, multi_tags
+from bot import task_dict, bot, bot_name, task_dict_lock, OWNER_ID, user_data, multi_tags
 from bot.helper.ext_utils.bot_utils import new_task
 from bot.helper.ext_utils.status_utils import getTaskByGid, getAllTasks, MirrorStatus
 from bot.helper.telegram_helper import button_build
@@ -18,16 +19,29 @@ from bot.helper.telegram_helper.message_utils import (
 
 async def cancel_task(_, message):
     user_id = message.from_user.id if message.from_user else message.sender_chat.id
-    msg = message.text.split()
-    if len(msg) > 1:
-        gid = msg[1]
+    msg = re_search(
+        rf"/(?:{BotCommands.CancelTaskCommand[0]}|{BotCommands.CancelTaskCommand[1]})(?:@{bot_name})?[_ ]([a-zA-Z0-9_-]+)(?:@{bot_name})?",
+        message.text
+    )
+    try:
+        gid = msg.group(1) # type: ignore
+    except AttributeError:
+        gid = None
+    if gid is not None:
         if len(gid) == 4:
             multi_tags.discard(gid)
             return
         else:
             task = await getTaskByGid(gid)
             if task is None:
-                await sendMessage(message, f"GID: <code>{gid}</code> Not Found.")
+                tmsg = await sendMessage(
+                    message,
+                    f"GID: <code>{gid}</code> Not Found."
+                )
+                await auto_delete_message(
+                    message,
+                    tmsg
+                )
                 return
     elif reply_to_id := message.reply_to_message_id:
         async with task_dict_lock:
@@ -162,17 +176,41 @@ async def cancel_all_update(_, query):
             await sendMessage(reply_to, f"No matching tasks for {data[1]}!")
 
 
-bot.add_handler(
+bot.add_handler( # type: ignore
     MessageHandler(
         cancel_task,
-        filters=command(BotCommands.CancelTaskCommand) & CustomFilters.authorized,
+        filters=command(
+            BotCommands.CancelTaskCommand,
+            case_sensitive=True
+        ) & CustomFilters.authorized,
     )
 )
-bot.add_handler(
+bot.add_handler( # type: ignore
+    MessageHandler(
+        cancel_task,
+        filters=regex(
+            rf"^/{BotCommands.CancelTaskCommand[1]}(_\w+)?(?!all)"
+        ) & CustomFilters.authorized,
+    )
+)
+bot.add_handler( # type: ignore
     MessageHandler(
         cancell_all_buttons,
-        filters=command(BotCommands.CancelAllCommand) & CustomFilters.authorized,
+        filters=command(
+            BotCommands.CancelAllCommand,
+            case_sensitive=True
+        ) & CustomFilters.authorized,
     )
 )
-bot.add_handler(CallbackQueryHandler(cancel_all_update, filters=regex("^canall")))
-bot.add_handler(CallbackQueryHandler(cancel_multi, filters=regex("^stopm")))
+bot.add_handler( # type: ignore
+    CallbackQueryHandler(
+        cancel_all_update,
+        filters=regex("^canall")
+    )
+)
+bot.add_handler( # type: ignore
+    CallbackQueryHandler(
+        cancel_multi,
+        filters=regex("^stopm")
+    )
+)

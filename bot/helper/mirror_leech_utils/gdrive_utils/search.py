@@ -93,7 +93,7 @@ class gdSearch(GoogleDriveHelper):
             return {"files": []}
 
     def drive_list(self, fileName, target_id="", user_id=""):
-        msg = ""
+        msg = f"""<figure><img src='https://i.pinimg.com/736x/83/05/0b/83050b95676c299eed2ff4840cc941f3.jpg'></figure>"""
         fileName = self.escapes(str(fileName))
         contents_no = 0
         telegraph_content = []
@@ -131,7 +131,7 @@ class gdSearch(GoogleDriveHelper):
                 else:
                     continue
             if not Title:
-                msg += f"<h4>Search Result For {fileName}</h4>"
+                msg += f"<h4>Search Result For: {fileName} 📌</h4>"
                 Title = True
             if drive_name:
                 msg += f"╾────────────╼<br><b>{drive_name}</b><br>╾────────────╼<br>"
@@ -143,7 +143,7 @@ class gdSearch(GoogleDriveHelper):
                     msg += f"<b><a href={furl}>Drive Link</a></b>"
                     if index_url:
                         url = f'{index_url}findpath?id={file.get("id")}'
-                        msg += f' <b>| <a href="{url}">Index Link</a></b>'
+                        msg += f' <b>| <a href="{url}">Direct Link</a></b>'
                 elif mime_type == "application/vnd.google-apps.shortcut":
                     furl = self.G_DRIVE_DIR_BASE_DOWNLOAD_URL.format(file.get("id"))
                     msg += (
@@ -156,7 +156,7 @@ class gdSearch(GoogleDriveHelper):
                     msg += f"<b><a href={furl}>Drive Link</a></b>"
                     if index_url:
                         url = f'{index_url}findpath?id={file.get("id")}'
-                        msg += f' <b>| <a href="{url}">Index Link</a></b>'
+                        msg += f' <b>| <a href="{url}">Direct Link</a></b>'
                         if mime_type.startswith(("image", "video", "audio")):
                             urlv = f'{index_url}findpath?id={file.get("id")}&view=true'
                             msg += f' <b>| <a href="{urlv}">View Link</a></b>'
@@ -168,7 +168,7 @@ class gdSearch(GoogleDriveHelper):
             if self._noMulti:
                 break
 
-        if msg != "":
+        if msg != f"""<figure><img src='https://i.pinimg.com/736x/83/05/0b/83050b95676c299eed2ff4840cc941f3.jpg'></figure>""":
             telegraph_content.append(msg)
 
         return telegraph_content, contents_no

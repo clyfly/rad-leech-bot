@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    container_name: zyradaex
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: bash start.sh
     restart: on-failure
     ports:

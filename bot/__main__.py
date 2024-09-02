@@ -11,14 +11,15 @@ from psutil import (
     net_io_counters,
     boot_time,
 )
-from pyrogram.filters import command
 from pyrogram.handlers import MessageHandler
+from pyrogram.filters import command
 from signal import signal, SIGINT
 from sys import executable
 from time import time
 
 from bot import (
     bot,
+    bot_name,
     botStartTime,
     LOGGER,
     Intervals,
@@ -27,7 +28,7 @@ from bot import (
     scheduler,
     sabnzbd_client,
 )
-from .helper.ext_utils.bot_utils import cmd_exec, sync_to_async, create_help_buttons
+from .helper.ext_utils.bot_utils import cmd_exec, sync_to_async, create_help_buttons, set_commands
 from .helper.ext_utils.db_handler import DbManager
 from .helper.ext_utils.files_utils import clean_all, exit_clean_up
 from .helper.ext_utils.jdownloader_booter import jdownloader
@@ -43,6 +44,7 @@ from .modules import (
     authorize,
     cancel_task,
     clone,
+    speedtest,
     exec,
     file_selector,
     gd_count,
@@ -93,28 +95,40 @@ async def stats(_, message):
     await sendMessage(message, stats)
 
 
+from time import time
+from bot import botStartTime
+from .helper.common import TaskConfig
+
+
 async def start(client, message):
     buttons = ButtonMaker()
-    buttons.ubutton("Repo", "https://www.github.com/anasty17/mirror-leech-telegram-bot")
-    buttons.ubutton("Owner", "https://t.me/anas_tayyar")
+    buttons.ubutton("ʙᴏᴛ\nᴏᴡɴᴇʀ", "https://t.me/u_xzyp", "header")
+    
+    is_authorized = await CustomFilters.authorized(client, message)
+    status = "Authorize: ✅" if is_authorized else "Authorize: ❌"
+
+    if not is_authorized:
+        buttons.ubutton("ᴊᴏɪɴ\nɢʀᴏᴜᴘ", "https://t.me/+fXZCqCgbgj43ZmE9")
+        
     reply_markup = buttons.build_menu(2)
-    if await CustomFilters.authorized(client, message):
-        start_string = f"""
-This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram.
-Type /{BotCommands.HelpCommand} to get a list of available commands
+
+    start_string = f"""
+Halo, aku {bot_name}.
+
+<blockquote>Aku bisa bantu mirror link, file, atau torrent ke Google Drive, rclone cloud, atau Telegram.</blockquote>
+
+Ketik /{BotCommands.HelpCommand} untuk lihat daftar perintah.
+
+<b>Uptime: {get_readable_time(time() - botStartTime)}</b>
+<b>{status}</b>
 """
-        await sendMessage(message, start_string, reply_markup)
-    else:
-        await sendMessage(
-            message,
-            "You Are not authorized user! Deploy your own mirror-leech bot",
-            reply_markup,
-        )
+
+    await sendMessage(message, start_string, reply_markup)
 
 
 async def restart(_, message):
     Intervals["stopAll"] = True
-    restart_message = await sendMessage(message, "Restarting...")
+    restart_message = await sendMessage(message, "sek sabar...")
     if scheduler.running:
         scheduler.shutdown(wait=False)
     if qb := Intervals["qb"]:
@@ -156,9 +170,8 @@ async def ping(_, message):
 async def log(_, message):
     await sendFile(message, "log.txt")
 
-
 help_string = f"""
-NOTE: Try each command without any argument to see more detalis.
+NOTE: Try each command without any argument to see more detalis.<blockquote expandable>
 /{BotCommands.MirrorCommand[0]} or /{BotCommands.MirrorCommand[1]}: Start mirroring to cloud.
 /{BotCommands.QbMirrorCommand[0]} or /{BotCommands.QbMirrorCommand[1]}: Start Mirroring to cloud using qBittorrent.
 /{BotCommands.JdMirrorCommand[0]} or /{BotCommands.JdMirrorCommand[1]}: Start Mirroring to cloud using JDownloader.
@@ -194,7 +207,7 @@ NOTE: Try each command without any argument to see more detalis.
 /{BotCommands.AExecCommand}: Exec async functions (Only Owner).
 /{BotCommands.ExecCommand}: Exec sync functions (Only Owner).
 /{BotCommands.ClearLocalsCommand}: Clear {BotCommands.AExecCommand} or {BotCommands.ExecCommand} locals (Only Owner).
-/{BotCommands.RssCommand}: RSS Menu.
+/{BotCommands.RssCommand}: RSS Menu.</blockquote>
 """
 
 
@@ -229,7 +242,7 @@ async def restart_notification():
     if INCOMPLETE_TASK_NOTIFIER and DATABASE_URL:
         if notifier_dict := await DbManager().get_incomplete_tasks():
             for cid, data in notifier_dict.items():
-                msg = "Restarted Successfully!" if cid == chat_id else "Bot Restarted!"
+                msg = "oke, beres.." if cid == chat_id else "Bot Restarted!"
                 for tag, links in data.items():
                     msg += f"\n\n{tag}: "
                     for index, link in enumerate(links, start=1):
@@ -243,7 +256,7 @@ async def restart_notification():
     if await aiopath.isfile(".restartmsg"):
         try:
             await bot.edit_message_text(
-                chat_id=chat_id, message_id=msg_id, text="Restarted Successfully!"
+                chat_id=chat_id, message_id=msg_id, text="Oke Beres.."
             )
         except:
             pass
@@ -260,7 +273,9 @@ async def main():
         restart_notification(),
         telegraph.create_account(),
         rclone_serve_booter(),
+        set_commands(bot),
         sync_to_async(start_aria2_listener, wait=False),
+        set_commands(bot),
     )
     create_help_buttons()
 
@@ -291,7 +306,7 @@ async def main():
             stats, filters=command(BotCommands.StatsCommand) & CustomFilters.authorized
         )
     )
-    LOGGER.info("Bot Started!")
+    LOGGER.info("ZyradLeechBot: lets't get party Started!")
     signal(SIGINT, exit_clean_up)
 
 

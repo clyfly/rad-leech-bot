@@ -252,29 +252,29 @@ class TaskListener(TaskConfig):
             and DATABASE_URL
         ):
             await DbManager().rm_complete_task(self.message.link)
-        msg = f"<b>Name: </b><code>{escape(self.name)}</code>\n\n<b>Size: </b>{get_readable_file_size(self.size)}"
+        msg = (
+            f"<b><i>{escape(self.name)}</i></b>\n\n"
+            f"<blockquote><b>Size   : </b>{get_readable_file_size(self.size)}\n"
+        )
         LOGGER.info(f"Task Done: {self.name}")
         if self.isLeech:
-            msg += f"\n<b>Total Files: </b>{folders}"
+            msg = f"<b><i>#LeechDone</i></b>\n" + msg
+            msg += f"<b>Total  : </b>{folders}"
             if mime_type != 0:
-                msg += f"\n<b>Corrupted Files: </b>{mime_type}"
-            msg += f"\n<b>cc: </b>{self.tag}\n\n"
+                msg += f"\n<b>Corrupted : </b>{mime_type}"
+            msg += f"\n<b>user   : </b>{self.tag}"
+            msg += f"\n<b>UID    : </b>{self.message.from_user.id}</blockquote>\n"
             if not files:
+                msg += f"\n<b><i>Files has been sent to your DM.</i></b>"
                 await sendMessage(self.message, msg)
             else:
-                fmsg = ""
-                for index, (link, name) in enumerate(files.items(), start=1):
-                    fmsg += f"{index}. <a href='{link}'>{name}</a>\n"
-                    if len(fmsg.encode() + msg.encode()) > 4000:
-                        await sendMessage(self.message, msg + fmsg)
-                        await sleep(1)
-                        fmsg = ""
-                if fmsg != "":
-                    await sendMessage(self.message, msg + fmsg)
+                msg += f"\n<b><i>Files has been sent to your DC.</i></b>"
+                await sendMessage(self.message, msg)
         else:
-            msg += f"\n\n<b>Type: </b>{mime_type}"
+            msg = f"<b><i>#MirrorDone</i></b>\n" + msg
+            msg += f"<b>Type  : </b>{mime_type}"
             if mime_type == "Folder":
-                msg += f"\n<b>SubFolders: </b>{folders}"
+                msg += f"\n<b>SubFD: </b>{folders}"
                 msg += f"\n<b>Files: </b>{files}"
             if (
                 link
@@ -284,7 +284,7 @@ class TaskListener(TaskConfig):
             ):
                 buttons = ButtonMaker()
                 if link:
-                    buttons.ubutton("☁️ Cloud Link", link)
+                    buttons.ubutton("ᴅʀɪᴠᴇ ʟɪɴᴋ", link, "header")
                 else:
                     msg += f"\n\nPath: <code>{rclonePath}</code>"
                 if (
@@ -297,7 +297,7 @@ class TaskListener(TaskConfig):
                     share_url = f"{RCLONE_SERVE_URL}/{remote}/{url_path}"
                     if mime_type == "Folder":
                         share_url += "/"
-                    buttons.ubutton("🔗 Rclone Link", share_url)
+                    buttons.ubutton("ʀᴄʟᴏɴᴇ ʟɪɴᴋ", share_url)
                 if not rclonePath and dir_id:
                     INDEX_URL = ""
                     if self.privateLink:
@@ -306,15 +306,17 @@ class TaskListener(TaskConfig):
                         INDEX_URL = config_dict["INDEX_URL"]
                     if INDEX_URL:
                         share_url = f"{INDEX_URL}findpath?id={dir_id}"
-                        buttons.ubutton("⚡ Index Link", share_url)
+                        buttons.ubutton("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url)
                         if mime_type.startswith(("image", "video", "audio")):
                             share_urls = f"{INDEX_URL}findpath?id={dir_id}&view=true"
-                            buttons.ubutton("🌐 View Link", share_urls)
+                            buttons.ubutton("ᴠɪᴇᴡ ʟɪɴᴋ", share_urls)
                 button = buttons.build_menu(2)
             else:
                 msg += f"\n\nPath: <code>{rclonePath}</code>"
                 button = None
-            msg += f"\n\n<b>cc: </b>{self.tag}"
+            msg += f"\n<b>User : </b>{self.tag}"
+            msg += f"\n<b>UID  : </b><code>{self.message.from_user.id}</code></blockquote>\n"
+            msg += f"\n<b><i>Click the button below to Download</b></i>"
             await sendMessage(self.message, msg, button)
         if self.seed:
             if self.newDir:

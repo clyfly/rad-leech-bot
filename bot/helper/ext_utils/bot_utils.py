@@ -6,6 +6,7 @@ from asyncio import (
     sleep,
 )
 from asyncio.subprocess import PIPE
+from nekozee.types import BotCommand
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial, wraps
 
@@ -17,6 +18,7 @@ from bot.helper.ext_utils.help_messages import (
 )
 from bot.helper.ext_utils.telegraph_helper import telegraph
 from bot.helper.telegram_helper.button_build import ButtonMaker
+from bot.helper.telegram_helper.bot_commands import BotCommands
 
 THREADPOOL = ThreadPoolExecutor(max_workers=1000)
 
@@ -77,7 +79,7 @@ async def get_telegraph_list(telegraph_content):
     path = [
         (
             await telegraph.create_page(
-                title="Mirror-Leech-Bot Drive Search", content=content
+                title="𝙓𝙔𝙍𝘼𝘿 𝘿𝙍𝙄𝙑𝙀 𝙎𝙀𝘼𝙍𝘾𝙃", content=content
             )
         )["path"]
         for content in telegraph_content
@@ -87,6 +89,83 @@ async def get_telegraph_list(telegraph_content):
     buttons = ButtonMaker()
     buttons.ubutton("🔎 VIEW", f"https://telegra.ph/{path[0]}")
     return buttons.build_menu(1)
+
+
+async def set_commands(client):
+    await client.set_bot_commands([
+        BotCommand(
+            f"{BotCommands.StartCommand}",
+            "Mulai bot dan dapatkan informasi dasar."
+        ),
+        BotCommand(
+            f"{BotCommands.MirrorCommand[0]}",
+            "Mulai mirror link dan file ke cloud."
+        ),
+        BotCommand(
+            f"{BotCommands.QbMirrorCommand[0]}",
+            "Mulai mirror link dengan qBittorrent."
+        ),
+        BotCommand(
+            f"{BotCommands.YtdlCommand[0]}",
+            "Mirror link yang didukung yt-dlp."
+        ),
+        BotCommand(
+            f"{BotCommands.LeechCommand[0]}",
+            "Mulai leech link dan file ke Telegram."
+        ),
+        BotCommand(
+            f"{BotCommands.QbLeechCommand[0]}",
+            "Mulai leech link dengan qBittorrent."
+        ),
+        BotCommand(
+            f"{BotCommands.YtdlLeechCommand[0]}",
+            "Leech link yang didukung yt-dlp."
+        ),
+        BotCommand(
+            f"{BotCommands.CloneCommand}",
+            "Salin file atau folder ke Google Drive."
+        ),
+        BotCommand(
+            f"{BotCommands.CountCommand}",
+            "[URL drive]: Hitung file atau folder di Google Drive."
+        ),
+        BotCommand(
+            f"{BotCommands.StatusCommand}",
+            "Dapatkan status semua tugas."
+        ),
+        BotCommand(
+            f"{BotCommands.StatsCommand}",
+            "Periksa statistik bot."
+        ),
+        BotCommand(
+            f"{BotCommands.CancelTaskCommand[0]}",
+            "Batalkan tugas."
+        ),
+        BotCommand(
+            f"{BotCommands.CancelAllCommand}",
+            "Batalkan semua tugas yang ditambahkan oleh Anda."
+        ),
+        BotCommand(
+            f"{BotCommands.ListCommand}",
+            "Cari sesuatu di Google Drive."
+        ),
+        BotCommand(
+            f"{BotCommands.SearchCommand}",
+            "Cari sesuatu di situs torrent."
+        ),
+        BotCommand(
+            f"{BotCommands.UserSetCommand[0]}",
+            "Pengaturan pengguna."
+        ),
+        BotCommand(
+            f"{BotCommands.HelpCommand}",
+            "Dapatkan bantuan lengkap."
+        ),
+        BotCommand(
+            f"{BotCommands.SpeedCommand}",
+            "Periksa seberapa cepat internetmu."
+        ),
+    ])
 
 
 def arg_parser(items, arg_base):

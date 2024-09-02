@@ -1,8 +1,16 @@
-from psutil import cpu_percent, virtual_memory, disk_usage
 from pyrogram.filters import command, regex
 from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 from time import time
-
+from psutil import (
+    boot_time,
+    cpu_count,
+    cpu_freq,
+    cpu_percent,
+    disk_usage,
+    swap_memory,
+    virtual_memory,
+    net_io_counters
+)
 from bot import (
     task_dict_lock,
     status_dict,
@@ -139,18 +147,30 @@ async def status_pages(_, query):
                         tasks["Download"] += 1
                         dl_speed += speed_string_to_bytes(download.speed())
 
-        msg = f"""<b>DL:</b> {tasks['Download']} | <b>UP:</b> {tasks['Upload']} | <b>SD:</b> {tasks['Seed']} | <b>AR:</b> {tasks['Archive']}
-<b>EX:</b> {tasks['Extract']} | <b>SP:</b> {tasks['Split']} | <b>QD:</b> {tasks['QueueDl']} | <b>QU:</b> {tasks['QueueUp']}
-<b>CL:</b> {tasks['Clone']} | <b>CK:</b> {tasks['CheckUp']} | <b>PA:</b> {tasks['Pause']} | <b>SV:</b> {tasks['SamVid']}
-<b>CM:</b> {tasks['ConvertMedia']}
+        msg = (
+            f"𝗥𝗔𝗗𝗟𝗘𝗘𝗖𝗛 𝗕𝗢𝗧 𝗜𝗡𝗙𝗢\n\n"
+            f"DL: {tasks['Download']} | "
+            f"UP: {tasks['Upload']} | "
+            f"SD: {tasks['Seed']} | "
+            f"EX: {tasks['Extract']} | "
+            f"SP: {tasks['Split']} | "
+            f"AR: {tasks['Archive']}\n"
+            f"QU: {tasks['QueueUp']} | "
+            f"QD: {tasks['QueueDl']} | "
+            f"PA: {tasks['Pause']} | "
+            f"SV: {tasks['SamVid']} | "
+            f"CM: {tasks['ConvertMedia']} | "
+            f"CL: {tasks['Clone']}\n\n"
 
-<b>ODLS:</b> {get_readable_file_size(dl_speed)}/s
-<b>OULS:</b> {get_readable_file_size(up_speed)}/s
-<b>OSDS:</b> {get_readable_file_size(seed_speed)}/s
-"""
-        button = ButtonMaker()
-        button.ibutton("Back", f"status {data[1]} ref")
-        await editMessage(message, msg, button.build_menu())
+            f"DL: {get_readable_file_size(dl_speed)}/s | " # type: ignore
+            f"UL: {get_readable_file_size(up_speed)}/s | " # type: ignore
+            f"SD: {get_readable_file_size(seed_speed)}/s\n" # type: ignore
+            f"BANDWITH USED {get_readable_file_size(net_io_counters().bytes_sent + net_io_counters().bytes_recv)}"
+        )
+        await query.answer(
+            msg,
+            show_alert=True
+        )
 
 
 bot.add_handler(

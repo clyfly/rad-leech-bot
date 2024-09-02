@@ -1,46 +1,47 @@
-from bot import CMD_SUFFIX
+from bot import CMD_SUFFIX as x
 
 
 class _BotCommands:
     def __init__(self):
-        self.StartCommand = f"start{CMD_SUFFIX}"
-        self.MirrorCommand = [f"mirror{CMD_SUFFIX}", f"m{CMD_SUFFIX}"]
-        self.QbMirrorCommand = [f"qbmirror{CMD_SUFFIX}", f"qm{CMD_SUFFIX}"]
-        self.JdMirrorCommand = [f"jdmirror{CMD_SUFFIX}", f"jm{CMD_SUFFIX}"]
-        self.YtdlCommand = [f"ytdl{CMD_SUFFIX}", f"y{CMD_SUFFIX}"]
-        self.NzbMirrorCommand = [f"nzbmirror{CMD_SUFFIX}", f"nm{CMD_SUFFIX}"]
-        self.LeechCommand = [f"leech{CMD_SUFFIX}", f"l{CMD_SUFFIX}"]
-        self.QbLeechCommand = [f"qbleech{CMD_SUFFIX}", f"ql{CMD_SUFFIX}"]
-        self.JdLeechCommand = [f"jdLeech{CMD_SUFFIX}", f"jl{CMD_SUFFIX}"]
-        self.YtdlLeechCommand = [f"ytdlleech{CMD_SUFFIX}", f"yl{CMD_SUFFIX}"]
-        self.NzbLeechCommand = [f"nzbleech{CMD_SUFFIX}", f"nl{CMD_SUFFIX}"]
-        self.CloneCommand = f"clone{CMD_SUFFIX}"
-        self.CountCommand = f"count{CMD_SUFFIX}"
-        self.DeleteCommand = f"del{CMD_SUFFIX}"
-        self.CancelTaskCommand = [f"cancel{CMD_SUFFIX}", f"c{CMD_SUFFIX}"]
-        self.CancelAllCommand = f"cancelall{CMD_SUFFIX}"
-        self.ForceStartCommand = [f"forcestart{CMD_SUFFIX}", f"fs{CMD_SUFFIX}"]
-        self.ListCommand = f"list{CMD_SUFFIX}"
-        self.SearchCommand = f"search{CMD_SUFFIX}"
-        self.StatusCommand = f"status{CMD_SUFFIX}"
-        self.UsersCommand = f"users{CMD_SUFFIX}"
-        self.AuthorizeCommand = f"authorize{CMD_SUFFIX}"
-        self.UnAuthorizeCommand = f"unauthorize{CMD_SUFFIX}"
-        self.AddSudoCommand = f"addsudo{CMD_SUFFIX}"
-        self.RmSudoCommand = f"rmsudo{CMD_SUFFIX}"
-        self.PingCommand = f"ping{CMD_SUFFIX}"
-        self.RestartCommand = f"restart{CMD_SUFFIX}"
-        self.StatsCommand = f"stats{CMD_SUFFIX}"
-        self.HelpCommand = f"help{CMD_SUFFIX}"
-        self.LogCommand = f"log{CMD_SUFFIX}"
-        self.ShellCommand = f"shell{CMD_SUFFIX}"
-        self.AExecCommand = f"aexec{CMD_SUFFIX}"
-        self.ExecCommand = f"exec{CMD_SUFFIX}"
-        self.ClearLocalsCommand = f"clearlocals{CMD_SUFFIX}"
-        self.BotSetCommand = [f"bsetting{CMD_SUFFIX}", f"bs{CMD_SUFFIX}"]
-        self.UserSetCommand = [f"usetting{CMD_SUFFIX}", f"us{CMD_SUFFIX}"]
-        self.SelectCommand = f"sel{CMD_SUFFIX}"
-        self.RssCommand = f"rss{CMD_SUFFIX}"
+        self.StartCommand = f"start"
+        self.MirrorCommand = [f"mirror{x}", f"m{x}"]
+        self.QbMirrorCommand = [f"qbmirror{x}", f"qbm{x}"]
+        self.JdMirrorCommand = [f"jdmirror{x}", f"jdm{x}"]
+        self.YtdlCommand = [f"ytdl{x}", f"ytm{x}"]
+        self.NzbMirrorCommand = [f"nzbmirror{x}", f"nm{x}"]
+        self.LeechCommand = [f"leech{x}", f"l{x}"]
+        self.QbLeechCommand = [f"qbleech{x}", f"qbl{x}"]
+        self.JdLeechCommand = [f"jdLeech{x}", f"jdl{x}"]
+        self.YtdlLeechCommand = [f"ytdlleech{x}", f"ytl{x}"]
+        self.NzbLeechCommand = [f"nzbleech{x}", f"nl{x}"]
+        self.CloneCommand = f"clone{x}"
+        self.CountCommand = f"count{x}"
+        self.SpeedCommand = f"speedtest{x}"
+        self.DeleteCommand = f"del{x}"
+        self.CancelTaskCommand = [f"cancel{x}", f"c{x}"]
+        self.CancelAllCommand = f"cancelall{x}"
+        self.ForceStartCommand = [f"forcestart{x}", f"fs{x}"]
+        self.ListCommand = f"list{x}"
+        self.SearchCommand = f"search{x}"
+        self.StatusCommand = f"status{x}"
+        self.UsersCommand = f"users{x}"
+        self.AuthorizeCommand = f"authorize{x}"
+        self.UnAuthorizeCommand = f"unauthorize{x}"
+        self.AddSudoCommand = f"addsudo{x}"
+        self.RmSudoCommand = f"rmsudo{x}"
+        self.PingCommand = f"ping{x}"
+        self.RestartCommand = f"restart{x}"
+        self.StatsCommand = f"stats{x}"
+        self.HelpCommand = f"help{x}"
+        self.LogCommand = f"log{x}"
+        self.ShellCommand = f"shell{x}"
+        self.AExecCommand = f"aexec{x}"
+        self.ExecCommand = f"exec{x}"
+        self.ClearLocalsCommand = f"clearlocals{x}"
+        self.BotSetCommand = [f"bsetting{x}", f"bs{x}"]
+        self.UserSetCommand = [f"usetting{x}", f"us{x}"]
+        self.SelectCommand = f"sel{x}"
+        self.RssCommand = f"rss{x}"
 
 
 BotCommands = _BotCommands()

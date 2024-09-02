@@ -22,7 +22,7 @@ from tenacity import (
 )
 from time import time
 
-from bot import config_dict, user
+from bot import config_dict, user, bot, bot_name
 from bot.helper.ext_utils.bot_utils import sync_to_async
 from bot.helper.ext_utils.files_utils import clean_unwanted, is_archive, get_base_name
 from bot.helper.ext_utils.media_utils import (
@@ -83,11 +83,7 @@ class TgUploader:
 
     async def _msg_to_reply(self):
         if self._listener.upDest:
-            msg = (
-                self._listener.message.link
-                if self._listener.isSuperChat
-                else self._listener.message.text.lstrip("/")
-            )
+            msg = "<b>leech started notif</b>"
             try:
                 if self._user_session:
                     self._sent_msg = await user.send_message(

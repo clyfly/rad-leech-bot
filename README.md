@@ -159,8 +159,7 @@ programming in Python.
 > shrdsk.me (
 > sharedisk.io), akmfiles.com, wetransfer.com, pcloud.link, gofile.io (file/folders), easyupload.io, mdisk.me (with
 > ytdl),
-> tmpsend.com, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (file/folders) (you need to add cookies txt with
-> name) [terabox.txt](https://github.com/ytdl-org/youtube-dl#how-do-i-pass-cookies-to-youtube-dl).
+> tmpsend.com, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
 
 # How to deploy?
 
@@ -485,15 +484,15 @@ sudo docker compose logs --follow
 
 ```
 mirror - or /m Mirror
-qbmirror - or /qm Mirror torrent using qBittorrent
-jdmirror - or /jm Mirror using jdownloader
+qbmirror - or /qbm Mirror torrent using qBittorrent
+jdmirror - or /jdm Mirror using jdownloader
 nzbmirror - or /nm Mirror using sabnzbd
-ytdl - or /y Mirror yt-dlp supported links
+ytdl - or /ytm Mirror yt-dlp supported links
 leech - or /l Upload to telegram
-qbleech - or /ql Leech torrent using qBittorrent
-jdleech - or /jl Leech using jdownloader
+qbleech - or /qbl Leech torrent using qBittorrent
+jdleech - or /jdl Leech using jdownloader
 nzbleech - or /nl Leech using sabnzbd
-ytdlleech - or /yl Leech yt-dlp supported links
+ytdlleech - or /ytl Leech yt-dlp supported links
 clone - Copy file/folder to Drive
 count - Count file/folder from GDrive
 usetting - or /us User settings
