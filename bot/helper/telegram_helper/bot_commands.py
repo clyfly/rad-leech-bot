@@ -18,7 +18,7 @@ class _BotCommands:
         self.CountCommand = f"count{x}"
         self.SpeedCommand = f"speedtest{x}"
         self.DeleteCommand = f"del{x}"
-        self.CancelTaskCommand = [f"cancel{x}", f"c{x}"]
+        self.CancelTaskCommand = [f"abort{x}", f"a{x}"]
         self.CancelAllCommand = f"cancelall{x}"
         self.ForceStartCommand = [f"forcestart{x}", f"fs{x}"]
         self.ListCommand = f"list{x}"
