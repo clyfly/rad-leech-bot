@@ -10,7 +10,7 @@ from nekozee.types import BotCommand
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial, wraps
 
-from bot import user_data, config_dict, bot_loop
+from bot import user_data, config_dict, bot_loop, OWNER_ID
 from bot.helper.ext_utils.help_messages import (
     YT_HELP_DICT,
     MIRROR_HELP_DICT,
@@ -90,6 +90,19 @@ async def get_telegraph_list(telegraph_content):
     buttons.ubutton("🔎 VIEW", f"https://telegra.ph/{path[0]}")
     return buttons.build_menu(1)
 
+async def delete_links(message):
+    if message.from_user.id == OWNER_ID and message.chat.type == message.chat.type.PRIVATE:
+        return
+
+    if config_dict['DELETE_LINKS']:
+        try:
+            if reply_to := message.reply_to_message:
+                await reply_to.delete()
+                await message.delete()
+            else:
+                await message.delete()
+        except Exception as e:
+            LOGGER.error(str(e))
 
 async def set_commands(client):
     await client.set_bot_commands([

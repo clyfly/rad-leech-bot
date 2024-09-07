@@ -9,6 +9,7 @@ from yt_dlp import YoutubeDL
 from bot import DOWNLOAD_DIR, bot, config_dict, LOGGER
 from bot.helper.ext_utils.bot_utils import (
     new_task,
+    delete_links,
     sync_to_async,
     new_thread,
     arg_parser,
@@ -346,6 +347,8 @@ class YtDlp(TaskListener):
         bulk_end = 0
         reply_to = None
         opt = args["-opt"]
+        
+        await delete_links(self.message)
 
         if not isinstance(isBulk, bool):
             dargs = isBulk.split(":")

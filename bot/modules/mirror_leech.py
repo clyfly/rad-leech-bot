@@ -8,6 +8,7 @@ from bot import bot, DOWNLOAD_DIR, LOGGER
 from bot.helper.ext_utils.bot_utils import (
     get_content_type,
     new_task,
+    delete_links,
     sync_to_async,
     arg_parser,
     COMMAND_USAGE,
@@ -195,6 +196,8 @@ class Mirror(TaskListener):
         await self.getTag(text)
 
         path = f"{DOWNLOAD_DIR}{self.mid}{folder_name}"
+        
+        await delete_links(message=self.message)
 
         if not self.link and (reply_to := self.message.reply_to_message):
             if reply_to.text:

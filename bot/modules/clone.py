@@ -7,6 +7,7 @@ from secrets import token_urlsafe
 from bot import LOGGER, task_dict, task_dict_lock, bot
 from bot.helper.ext_utils.bot_utils import (
     new_task,
+    delete_links,
     sync_to_async,
     cmd_exec,
     arg_parser,
@@ -67,6 +68,7 @@ class Clone(TaskListener):
     async def newEvent(self):
         text = self.message.text.split("\n")
         input_list = text[0].split(" ")
+        await delete_links(self.message)
 
         args = {
             "link": "",
