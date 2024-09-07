@@ -108,16 +108,15 @@ async def start(client, message):
     status = "Authorize: ✅" if is_authorized else "Authorize: ❌"
 
     if not is_authorized:
-        buttons.ubutton("ᴊᴏɪɴ\nɢʀᴏᴜᴘ", "https://t.me/+fXZCqCgbgj43ZmE9")
+        buttons.ubutton("ʙᴏᴛ\nʀᴇᴘᴏ", "https://github.com/clyfly/rad-leech-bot")
         
     reply_markup = buttons.build_menu(2)
 
     start_string = f"""
-Halo, aku {bot_name}.
+<b>Hello, I am {bot_name}</b>
 
-<blockquote>Aku bisa bantu mirror link, file, atau torrent ke Google Drive, rclone cloud, atau Telegram.</blockquote>
-
-Ketik /{BotCommands.HelpCommand} untuk lihat daftar perintah.
+I can help you mirror links, files, or torrents to Google Drive, rclone cloud, or Telegram.
+Type /{BotCommands.HelpCommand} to see the list of commands.
 
 <b>Uptime: {get_readable_time(time() - botStartTime)}</b>
 <b>{status}</b>
@@ -242,7 +241,7 @@ async def restart_notification():
     if INCOMPLETE_TASK_NOTIFIER and DATABASE_URL:
         if notifier_dict := await DbManager().get_incomplete_tasks():
             for cid, data in notifier_dict.items():
-                msg = "oke, beres.." if cid == chat_id else "Bot Restarted!"
+                msg = "Restarting Done.." if cid == chat_id else "Bot Restarted!"
                 for tag, links in data.items():
                     msg += f"\n\n{tag}: "
                     for index, link in enumerate(links, start=1):
@@ -256,7 +255,7 @@ async def restart_notification():
     if await aiopath.isfile(".restartmsg"):
         try:
             await bot.edit_message_text(
-                chat_id=chat_id, message_id=msg_id, text="Oke Beres.."
+                chat_id=chat_id, message_id=msg_id, text="Restarting Done.."
             )
         except:
             pass

@@ -209,7 +209,7 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 > shrdsk.me (
 > sharedisk.io), akmfiles.com, wetransfer.com, pcloud.link, gofile.io (file/folders), easyupload.io, mdisk.me (with
 > ytdl),
-> tmpsend.com, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
+> tmpsend.com, mega.co.nz, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
 
 # How to deploy?
 
@@ -380,10 +380,12 @@ quotes, even if it's `Int`, `Bool` or `List`.
       from qbittorrent.conf or bsetting command.
     - Open port 8090 in your vps to access webui from any device. username: mltb, password: mltbmltb
 
-**8. JDownloader**
+**8. JDownloader & Mega Account**
 
 - `JD_EMAIL`: jdownlaoder email sign up on [JDownloader](https://my.jdownloader.org/)
 - `JD_PASS`: jdownlaoder password
+- `MEGA_EMAIL`: Your mega email acc
+- `MEGA_PASSWORD`:Your mega password acc
 
 **9. Sabnzbd**
 

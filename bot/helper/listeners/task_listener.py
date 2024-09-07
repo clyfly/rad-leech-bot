@@ -254,7 +254,7 @@ class TaskListener(TaskConfig):
             await DbManager().rm_complete_task(self.message.link)
         msg = (
             f"<b><i>{escape(self.name)}</i></b>\n\n"
-            f"<blockquote><b>Size   : </b>{get_readable_file_size(self.size)}\n"
+            f"<b>Size   : </b>{get_readable_file_size(self.size)}\n"
         )
         LOGGER.info(f"Task Done: {self.name}")
         if self.isLeech:
@@ -263,7 +263,7 @@ class TaskListener(TaskConfig):
             if mime_type != 0:
                 msg += f"\n<b>Corrupted : </b>{mime_type}"
             msg += f"\n<b>user   : </b>{self.tag}"
-            msg += f"\n<b>UID    : </b>{self.message.from_user.id}</blockquote>\n"
+            msg += f"\n<b>UID    : </b>{self.message.from_user.id}\n"
             if not files:
                 msg += f"\n<b><i>Files has been sent to your DM.</i></b>"
                 await sendMessage(self.message, msg)
@@ -315,7 +315,7 @@ class TaskListener(TaskConfig):
                 msg += f"\n\nPath: <code>{rclonePath}</code>"
                 button = None
             msg += f"\n<b>User : </b>{self.tag}"
-            msg += f"\n<b>UID  : </b><code>{self.message.from_user.id}</code></blockquote>\n"
+            msg += f"\n<b>UID  : </b><code>{self.message.from_user.id}</code>\n"
             msg += f"\n<b><i>Click the button below to Download</b></i>"
             await sendMessage(self.message, msg, button)
         if self.seed:
