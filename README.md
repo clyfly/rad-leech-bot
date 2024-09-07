@@ -1,8 +1,58 @@
-This Telegram Bot, based on [python-aria-mirror-bot](https://github.com/lzzy12/python-aria-mirror-bot), has undergone
-substantial modifications and is designed for efficiently mirroring or leeching files from the Internet to various
-destinations, including Google Drive, Telegram, or any rclone-supported cloud. It is built using asynchronous
-programming in Python.
+<p align="center">
+  <h1>XYR-MLTB</h1>
+</p>
 
+Welcome to XYR-MLTB, an advanced, feature-rich fork of the renowned Anasty Mirror Leech Telegram Bot. This repository offers a robust and efficient solution for file mirroring and leeching via Telegram, incorporating various enhancements and modules from open-source contributors.
+
+## Overview
+
+XYR-MLTB allows Telegram users to seamlessly mirror and leech files from a variety of sources, including direct download links, torrents, and other supported platforms. With a flexible and intuitive command structure, this bot enhances your file management experience with minimal setup. Leveraging advanced download engines and cloud integration, XYR-MLTB ensures efficient handling of large data transfers.
+
+## Key Features
+
+- **Multi-Source Mirroring and Leeching**:
+  - Supports direct link downloads, torrent files, magnet links, and leech-supported links.
+  - Integrates with popular download managers like Aria2c, qBittorrent, and YTDLP.
+
+- **Cloud Integration**:
+  - Seamlessly integrates with Google Drive, Rclone, and other cloud storage services.
+  - Enables file upload, management, and sharing directly from Telegram.
+
+- **Advanced File Management**:
+  - Detailed folder and file counting features for comprehensive content management.
+  - Automated file organization and categorization for easy access.
+
+- **User-Friendly Commands**:
+  - Variety of commands for starting, stopping, and managing tasks.
+  - Real-time status and progress monitoring commands.
+
+- **Enhanced Security**:
+  - User-specific settings and permissions for secure operation.
+  - Options for direct and private link generation.
+
+- **Customizable and Extensible**:
+  - Open-source design allows for extensive customization.
+  - Modular architecture supports easy addition of new features.
+
+- **Performance Optimization**:
+  - Efficient task management for handling multiple downloads simultaneously.
+  - Optimized codebase for stable performance under heavy usage.
+
+## Additional Modules and Enhancements
+
+This fork includes various enhancements and modules from open-source developers, introducing new functionalities such as improved task management, additional leech options, and expanded format support. Regular updates ensure compatibility with the latest technologies and enhance the user experience.
+
+## Why Choose This Bot?
+
+XYR-MLTB is designed for users who need a powerful tool for managing large-scale file transfers via Telegram. With its intuitive commands, secure data handling, and extensive integration capabilities, it provides a comprehensive solution for all your file mirroring and leeching needs.
+
+Whether you're a casual user looking for ease of file download or an advanced user managing multiple cloud services, XYR-MLTB offers the tools and flexibility to meet your requirements.
+
+---
+
+Feel free to use and customize XYR-MLTB to fit your needs. For more information and to get started, please refer to the documentation and setup instructions provided in this repository.
+
+<details>
 # Features
 
 ## qBittorrent
@@ -787,7 +837,7 @@ separated by a new line.
 -----
 
 >
-
+</details>
 ## All Thanks To Our Contributors
 
 <a href="https://github.com/anasty17/mirror-leech-telegram-bot/graphs/contributors">
