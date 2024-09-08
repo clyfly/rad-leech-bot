@@ -115,7 +115,7 @@ async def get_user_settings(from_user):
 
     buttons.ibutton("Leech", f"userset {user_id} leech")
 
-    buttons.ibutton("Rclone", f"userset {user_id} rclone")
+    buttons.ibutton("Rclone Tools", f"userset {user_id} rclone")
     rccmsg = "Exists" if await aiopath.exists(rclone_conf) else "Not Exists"
     if user_dict.get("rclone_path", False):
         rccpath = user_dict["rclone_path"]
@@ -148,8 +148,8 @@ async def get_user_settings(from_user):
     default_upload = (
         user_dict.get("default_upload", "") or config_dict["DEFAULT_UPLOAD"]
     )
-    du = "Gd API" if default_upload == "gd" else "Rclone"
-    dub = "Gd API" if default_upload != "gd" else "Rclone"
+    du = "Gdrive ✅" if default_upload == "gd" else "Rclone ✅"
+    dub = "Gdrive" if default_upload != "gd" else "Rclone"
     buttons.ibutton(f"With {dub}", f"userset {user_id} {default_upload}")
 
     buttons.ibutton("Excluded Exts", f"userset {user_id} ex_ex")
@@ -180,11 +180,12 @@ async def get_user_settings(from_user):
 
 Leech Type: <b>{ltype}</b>
 Split Size: <b>{split_size}</b>
-Destination: <b>{leech_dest}</b>
+Dump Chat: <b>{leech_dest}</b>
 Upload Method: <b>{du}</b>
+Rclone Config <b>{rccmsg}</b>
+Gdrive Token <b>{tokenmsg}</b>
 Stop Duplicate: <b>{sd_msg}</b>
-
-<i><b>this action will have consequences.</b></i>"""
+<i><b>This action will have consequences.</b></i>"""
     return text, buttons.build_menu(2)
 
 
@@ -403,7 +404,7 @@ async def edit_user_settings(client, query):
             split_size = user_dict["split_size"]
         else:
             split_size = config_dict["LEECH_SPLIT_SIZE"]
-        buttons.ibutton("Leech Destination", f"userset {user_id} ldest")
+        buttons.ibutton("Dump Chat", f"userset {user_id} ldest")
         if user_dict.get("leech_dest", False):
             leech_dest = user_dict["leech_dest"]
         elif "leech_dest" not in user_dict and (LD := config_dict["LEECH_DUMP_CHAT"]):
@@ -498,7 +499,7 @@ Leech Split Size is <b>{split_size}</b>
 Equal Splits is <b>{equal_splits}</b>
 Media Group is <b>{media_group}</b>
 Leech Prefix is <code>{escape(lprefix)}</code>
-Leech Destination is <code>{leech_dest}</code>
+Dump Chat is <code>{leech_dest}</code>
 Leech by <b>{leech_method}</b> session
 Mixed Leech is <b>{mixed_leech}</b>
 """
