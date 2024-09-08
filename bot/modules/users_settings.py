@@ -194,7 +194,7 @@ async def update_user_settings(query):
     user_id = query.from_user.id
     thumbnail = f"Thumbnails/{user_id}.jpg"
     if not ospath.exists(thumbnail):
-        thumbnail = "https://i.pinimg.com/736x/e9/77/ae/e977ae43f743df908d201b4f4ea47240.jpg"
+        thumbnail = config_dict["THUMBNAIL_IMAGES"]
     await editMessage(query.message, msg, button, thumbnail)
 
 @new_thread
@@ -204,7 +204,7 @@ async def user_settings(_, message):
     user_id = message.from_user.id
     thumbnail = f"Thumbnails/{user_id}.jpg"
     if not ospath.exists(thumbnail):
-        thumbnail = "https://i.pinimg.com/736x/e9/77/ae/e977ae43f743df908d201b4f4ea47240.jpg"
+        thumbnail = config_dict["THUMBNAIL_IMAGES"]
     msg, button = await get_user_settings(from_user)
     await sendMessage(message, msg, button, thumbnail)
 

@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from bot import DRIVES_NAMES, DRIVES_IDS, INDEX_URLS, user_data
+from bot import DRIVES_NAMES, DRIVES_IDS, INDEX_URLS, user_data, config_dict
 from bot.helper.ext_utils.status_utils import get_readable_file_size
 from bot.helper.mirror_leech_utils.gdrive_utils.helper import GoogleDriveHelper
 
@@ -93,7 +93,7 @@ class gdSearch(GoogleDriveHelper):
             return {"files": []}
 
     def drive_list(self, fileName, target_id="", user_id=""):
-        msg = f"""<figure><img src='https://i.pinimg.com/736x/83/05/0b/83050b95676c299eed2ff4840cc941f3.jpg'></figure>"""
+        msg = f"""<figure><img src='{config_dict["COVER_IMAGES"]}'></figure>"""
         fileName = self.escapes(str(fileName))
         contents_no = 0
         telegraph_content = []
@@ -168,7 +168,7 @@ class gdSearch(GoogleDriveHelper):
             if self._noMulti:
                 break
 
-        if msg != f"""<figure><img src='https://i.pinimg.com/736x/83/05/0b/83050b95676c299eed2ff4840cc941f3.jpg'></figure>""":
+        if msg != f"""<figure><img src='{config_dict["COVER_IMAGES"]}'></figure>""":
             telegraph_content.append(msg)
 
         return telegraph_content, contents_no
