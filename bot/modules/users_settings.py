@@ -113,7 +113,7 @@ async def get_user_settings(from_user):
     else:
         mixed_leech = "Disabled"
 
-    buttons.ibutton("Leech", f"userset {user_id} leech")
+    buttons.ibutton("Leech Settings", f"userset {user_id} leech")
 
     buttons.ibutton("Rclone Tools", f"userset {user_id} rclone")
     rccmsg = "Exists" if await aiopath.exists(rclone_conf) else "Not Exists"

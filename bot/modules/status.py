@@ -148,7 +148,7 @@ async def status_pages(_, query):
                         dl_speed += speed_string_to_bytes(download.speed())
 
         msg = (
-            f"𝗥𝗔𝗗𝗟𝗘𝗘𝗖𝗛 𝗕𝗢𝗧 𝗜𝗡𝗙𝗢\n\n"
+            f"   𝗥𝗔𝗗𝗟𝗘𝗘𝗖𝗛 𝗕𝗢𝗧 𝗜𝗡𝗙𝗢\n\n"
             f"DL: {tasks['Download']} | "
             f"UP: {tasks['Upload']} | "
             f"SD: {tasks['Seed']} | "

@@ -6,7 +6,7 @@ from asyncio import (
     sleep,
 )
 from asyncio.subprocess import PIPE
-from nekozee.types import BotCommand
+from pyrogram.types import BotCommand
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial, wraps
 
@@ -112,27 +112,27 @@ async def set_commands(client):
         ),
         BotCommand(
             f"{BotCommands.MirrorCommand[0]}",
-            "Mulai mirror link dan file ke cloud."
+            "atau /m Mulai mirror link dan file ke cloud."
         ),
         BotCommand(
             f"{BotCommands.QbMirrorCommand[0]}",
-            "Mulai mirror link dengan qBittorrent."
+            "atau /qbm Mulai mirror link dengan qBittorrent."
         ),
         BotCommand(
             f"{BotCommands.YtdlCommand[0]}",
-            "Mirror link yang didukung yt-dlp."
+            "atau /ytm Mirror link yang didukung yt-dlp."
         ),
         BotCommand(
             f"{BotCommands.LeechCommand[0]}",
-            "Mulai leech link dan file ke Telegram."
+            "atau /l Mulai leech link dan file ke Telegram."
         ),
         BotCommand(
             f"{BotCommands.QbLeechCommand[0]}",
-            "Mulai leech link dengan qBittorrent."
+            "atau /qbl Mulai leech link dengan qBittorrent."
         ),
         BotCommand(
             f"{BotCommands.YtdlLeechCommand[0]}",
-            "Leech link yang didukung yt-dlp."
+            "atau /ytl Leech link yang didukung yt-dlp."
         ),
         BotCommand(
             f"{BotCommands.CloneCommand}",

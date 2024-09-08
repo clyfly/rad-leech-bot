@@ -8,12 +8,12 @@ class _BotCommands:
         self.QbMirrorCommand = [f"qbmirror{x}", f"qbm{x}"]
         self.JdMirrorCommand = [f"jdmirror{x}", f"jdm{x}"]
         self.YtdlCommand = [f"ytdl{x}", f"ytm{x}"]
-        self.NzbMirrorCommand = [f"nzbmirror{x}", f"nm{x}"]
+        self.NzbMirrorCommand = [f"nzbmirror{x}", f"nzm{x}"]
         self.LeechCommand = [f"leech{x}", f"l{x}"]
         self.QbLeechCommand = [f"qbleech{x}", f"qbl{x}"]
         self.JdLeechCommand = [f"jdLeech{x}", f"jdl{x}"]
         self.YtdlLeechCommand = [f"ytdlleech{x}", f"ytl{x}"]
-        self.NzbLeechCommand = [f"nzbleech{x}", f"nl{x}"]
+        self.NzbLeechCommand = [f"nzbleech{x}", f"nzl{x}"]
         self.CloneCommand = f"clone{x}"
         self.CountCommand = f"count{x}"
         self.SpeedCommand = f"speedtest{x}"
