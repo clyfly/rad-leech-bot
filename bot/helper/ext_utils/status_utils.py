@@ -165,7 +165,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
         user_tag = task.listener.tag.replace("@", "").replace("_", " ")
         cancel_task = (f"<b>/{BotCommands.CancelTaskCommand[0]}_{task.gid()}</b>")
         if CustomFilters.authorized:
-            if task.listener.isSuperChat:
+            if task.listener.is_super_chat:
                 msg += f"<pre><b>{escape(f'{task.name()}')}</b></pre>"
             else:
                 msg += f"<pre><b>AUTHORIZED USER TASK 🔐</b></pre>"

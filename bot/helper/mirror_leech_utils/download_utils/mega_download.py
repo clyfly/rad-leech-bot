@@ -17,7 +17,7 @@ from bot import (
     non_queued_dl,
     queue_dict_lock,
 )
-from bot.helper.telegram_helper.message_utils import sendMessage, sendStatusMessage
+from bot.helper.telegram_helper.message_utils import send_message, send_status_message
 from bot.helper.ext_utils.bot_utils import sync_to_async
 from bot.helper.ext_utils.links_utils import get_mega_link_type
 from bot.helper.mirror_leech_utils.status_utils.mega_download_status import MegaDownloadStatus
@@ -156,7 +156,7 @@ async def add_mega_download(listener, path):
         await sync_to_async(executor.do, folder_api.loginToFolder, (listener.link,))
         node = await sync_to_async(folder_api.authorizeNode, mega_listener.node)
     if mega_listener.error is not None:
-        await sendMessage(listener.message, str(mega_listener.error))
+        await send_message(listener.message, str(mega_listener.error))
         await sync_to_async(executor.do, api.logout, ())
         if folder_api is not None:
             await sync_to_async(executor.do, folder_api.logout, ())
@@ -165,7 +165,7 @@ async def add_mega_download(listener, path):
     listener.name = listener.name or node.getName()
     msg, button = await stop_duplicate_check(listener)
     if msg:
-        await sendMessage(listener.message, msg, button)
+        await send_message(listener.message, msg, button)
         await sync_to_async(executor.do, api.logout, ())
         if folder_api is not None:
             await sync_to_async(executor.do, folder_api.logout, ())
@@ -181,7 +181,7 @@ async def add_mega_download(listener, path):
             task_dict[listener.mid] = QueueStatus(listener, size, gid, "Dl")
         await listener.onDownloadStart()
         if listener.multi <= 1:
-            await sendStatusMessage(listener.message)
+            await send_status_message(listener.message)
         await event.wait()
         async with task_dict_lock:
             if listener.mid not in task_dict:
@@ -204,7 +204,7 @@ async def add_mega_download(listener, path):
     else:
         await listener.onDownloadStart()
         if listener.multi <= 1:
-            await sendStatusMessage(listener.message)
+            await send_status_message(listener.message)
         LOGGER.info(f"Download from Mega: {listener.name}")
 
     await makedirs(path, exist_ok=True)

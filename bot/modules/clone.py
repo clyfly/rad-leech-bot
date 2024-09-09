@@ -7,7 +7,7 @@ from secrets import token_urlsafe
 from bot import LOGGER, task_dict, task_dict_lock, bot, bot_loop
 from ..helper.ext_utils.bot_utils import (
     sync_to_async,
-    delete_links
+    delete_links,
     cmd_exec,
     arg_parser,
     COMMAND_USAGE,

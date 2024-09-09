@@ -31,6 +31,7 @@ from .helper.ext_utils.telegraph_helper import telegraph
 from .helper.ext_utils.bot_utils import (
     cmd_exec,
     sync_to_async,
+    set_commands,
     create_help_buttons,
     new_task,
 )
@@ -105,13 +106,13 @@ from .helper.common import TaskConfig
 
 async def start(client, message):
     buttons = ButtonMaker()
-    buttons.ubutton("ʙᴏᴛ\nᴏᴡɴᴇʀ", "https://t.me/u_xzyp", "header")
+    buttons.url_button("ʙᴏᴛ\nᴏᴡɴᴇʀ", "https://t.me/u_xzyp", "header")
     
     is_authorized = await CustomFilters.authorized(client, message)
     status = "Authorize: ✅" if is_authorized else "Authorize: ❌"
 
     if not is_authorized:
-        buttons.ubutton("ʙᴏᴛ\nʀᴇᴘᴏ", "https://github.com/clyfly/rad-leech-bot")
+        buttons.url_button("ʙᴏᴛ\nʀᴇᴘᴏ", "https://github.com/clyfly/rad-leech-bot")
         
     reply_markup = buttons.build_menu(2)
 
@@ -125,13 +126,13 @@ Type /{BotCommands.HelpCommand} to see the list of commands.
 <b>{status}</b>
 """
 
-    await sendMessage(message, start_string, reply_markup)
+    await send_message(message, start_string, reply_markup)
 
 
 @new_task
 async def restart(_, message):
-    Intervals["stopAll"] = True
-    restart_message = await sendMessage(message, "sek sabar...")
+    intervals["stopAll"] = True
+    restart_message = await send_message(message, "sek sabar...")
     if scheduler.running:
         scheduler.shutdown(wait=False)
     if qb := intervals["qb"]:
@@ -279,7 +280,6 @@ async def main():
         restart_notification(),
         telegraph.create_account(),
         rclone_serve_booter(),
-        set_commands(bot),
         sync_to_async(start_aria2_listener, wait=False),
         set_commands(bot),
     )

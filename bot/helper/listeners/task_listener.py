@@ -251,14 +251,13 @@ class TaskListener(TaskConfig):
             and config_dict["INCOMPLETE_TASK_NOTIFIER"]
             and DATABASE_URL
         ):
-<<<<<<< HEAD
             await database.rm_complete_task(self.message.link)
         msg = (
             f"<b><i>{escape(self.name)}</i></b>\n\n"
             f"<b>Size   : </b>{get_readable_file_size(self.size)}\n"
         )
         LOGGER.info(f"Task Done: {self.name}")
-        if self.isLeech:
+        if self.is_leech:
             msg = f"<b><i>#LeechDone</i></b>\n" + msg
             msg += f"<b>Total  : </b>{folders}"
             if mime_type != 0:
@@ -288,8 +287,7 @@ class TaskListener(TaskConfig):
                   buttons.url_button("ᴅʀɪᴠᴇ ʟɪɴᴋ", link, "header")
                 elif not link.startswith("https://drive.google.com/"):
                   buttons.url_button("ᴄʟᴏᴜᴅ ʟɪɴᴋ", link)
-                else:
-                    msg += f"\nPath  : <code>{rclonePath}</code>"
+                
                 if (
                     rclonePath
                     and (RCLONE_SERVE_URL := config_dict["RCLONE_SERVE_URL"])
@@ -309,7 +307,6 @@ class TaskListener(TaskConfig):
                         INDEX_URL = config_dict["INDEX_URL"]
                     if INDEX_URL:
                         share_url = f"{INDEX_URL}findpath?id={dir_id}"
-<<<<<<< HEAD
                         if config_dict["DISABLE_DRIVE_LINK"]:
                           buttons.url_button("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url, "header")
                         else:
