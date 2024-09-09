@@ -11,10 +11,10 @@ from bot import (
     config_dict,
     status_dict,
 )
-from bot.helper.ext_utils.bot_utils import sync_to_async
-from bot.helper.telegram_helper.bot_commands import BotCommands
-from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.button_build import ButtonMaker
+from .bot_utils import sync_to_async
+from ..telegram_helper.bot_commands import BotCommands
+from ..telegram_helper.filters import CustomFilters
+from ..telegram_helper.button_build import ButtonMaker
 
 SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
 
@@ -50,7 +50,8 @@ STATUSES = {
     "PA": MirrorStatus.STATUS_PAUSED,
 }
 
-async def getTaskByGid(gid: str):
+
+async def get_task_by_gid(gid: str):
     async with task_dict_lock:
         for tk in task_dict.values():
             if hasattr(tk, "seeding"):
@@ -59,17 +60,17 @@ async def getTaskByGid(gid: str):
                 return tk
         return None
 
-def getSpecificTasks(status, userId):
+def get_specific_tasks(status, user_id):
     if status == "All":
-        if userId:
-            return [tk for tk in task_dict.values() if tk.listener.userId == userId]
+        if user_id:
+            return [tk for tk in task_dict.values() if tk.listener.user_id == user_id]
         else:
             return list(task_dict.values())
-    elif userId:
+    elif user_id:
         return [
             tk
             for tk in task_dict.values()
-            if tk.listener.userId == userId
+            if tk.listener.user_id == user_id
             and (
                 (st := tk.status())
                 and st == status
@@ -87,22 +88,22 @@ def getSpecificTasks(status, userId):
             and st not in STATUSES.values()
         ]
 
-async def getAllTasks(req_status: str, userId):
-    async with task_dict_lock:
-        return await sync_to_async(getSpecificTasks, req_status, userId)
 
-def get_readable_file_size(size_in_bytes: int):
-    if size_in_bytes is None:
+async def get_all_tasks(req_status: str, user_id):
+    async with task_dict_lock:
+        return await sync_to_async(get_specific_tasks, req_status, user_id)
+
+
+def get_readable_file_size(size_in_bytes):
+    if not size_in_bytes:
         return "0B"
+
     index = 0
     while size_in_bytes >= 1024 and index < len(SIZE_UNITS) - 1:
         size_in_bytes /= 1024
         index += 1
-    return (
-        f"{size_in_bytes:.2f}{SIZE_UNITS[index]}"
-        if index > 0
-        else f"{size_in_bytes:.2f}B"
-    )
+
+    return f"{size_in_bytes:.2f}{SIZE_UNITS[index]}"
 
 def get_readable_time(seconds: int):
     periods = [("d", 86400), ("h", 3600), ("m", 60), ("s", 1)]
@@ -144,7 +145,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
     msg = ""
     button = None
 
-    tasks = await sync_to_async(getSpecificTasks, status, sid if is_user else None)
+    tasks = await sync_to_async(get_specific_tasks, status, sid if is_user else None)
 
     STATUS_LIMIT = config_dict["STATUS_LIMIT"]
     tasks_no = len(tasks)
@@ -167,7 +168,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
             if task.listener.isSuperChat:
                 msg += f"<pre><b>{escape(f'{task.name()}')}</b></pre>"
             else:
-                msg += f"<pre><b>AUTHORIZED USER TASK 🔐</b></pre>"        
+                msg += f"<pre><b>AUTHORIZED USER TASK 🔐</b></pre>"
         if tstatus not in [
             MirrorStatus.STATUS_SEEDING,
             MirrorStatus.STATUS_QUEUEUP,
@@ -217,18 +218,18 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
             msg = f"No Active {status} Tasks!\n\n"
     buttons = ButtonMaker()
     if not is_user:
-        buttons.ibutton("ʙᴏᴛ\nɪɴꜰᴏ", f"status {sid} ov", position="header")
+        buttons.data_button("ʙᴏᴛ\nɪɴꜰᴏ", f"status {sid} ov", position="header")
     if len(tasks) > STATUS_LIMIT:
         msg += f"<b>Page:</b> {page_no}/{pages} | <b>Tasks:</b> {tasks_no} | <b>Step:</b> {page_step}\n"
-        buttons.ibutton("⫷", f"status {sid} pre", position="header")
-        buttons.ibutton("⫸", f"status {sid} nex", position="header")
+        buttons.data_button("⫷", f"status {sid} pre", position="header")
+        buttons.data_button("⫸", f"status {sid} nex", position="header")
         if tasks_no > 30:
             for i in [1, 2, 4, 6, 8, 10, 15]:
-                buttons.ibutton(i, f"status {sid} ps {i}", position="footer")
+                buttons.data_button(i, f"status {sid} ps {i}", position="footer")
     if status != "All" or tasks_no > 20:
         for label, status_value in list(STATUSES.items())[:9]:
             if status_value != status:
-                buttons.ibutton(label, f"status {sid} st {status_value}")
+                buttons.data_button(label, f"status {sid} st {status_value}")
     button = buttons.build_menu(8)
     msg += (
         "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"

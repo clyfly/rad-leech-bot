@@ -1,6 +1,7 @@
+from sys import exit
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aria2p import API as ariaAPI, Client as ariaClient
-from asyncio import Lock, get_event_loop
+from asyncio import Lock, get_running_loop, new_event_loop, set_event_loop
 from dotenv import load_dotenv, dotenv_values
 from logging import (
     getLogger,
@@ -13,12 +14,13 @@ from logging import (
     warning as log_warning,
     ERROR,
 )
+from shutil import rmtree
 from os import remove, path as ospath, environ
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from pyrogram import Client as tgClient, enums
-from qbittorrentapi import Client as qbClient
-from sabnzbdapi import sabnzbdClient
+from pyrogram import Client as TgClient, enums
+from qbittorrentapi import Client as QbClient
+from sabnzbdapi import SabnzbdClient
 from socket import setdefaulttimeout
 from subprocess import Popen, run
 from time import time
@@ -39,7 +41,12 @@ getLogger("httpx").setLevel(ERROR)
 getLogger("pymongo").setLevel(ERROR)
 
 botStartTime = time()
-bot_loop = get_event_loop()
+
+try:
+    bot_loop = get_running_loop()
+except RuntimeError:
+    bot_loop = new_event_loop()
+    set_event_loop(bot_loop)
 
 basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -51,14 +58,14 @@ LOGGER = getLogger(__name__)
 
 load_dotenv("config.env", override=True)
 
-Intervals = {"status": {}, "qb": "", "jd": "", "nzb": "", "stopAll": False}
+intervals = {"status": {}, "qb": "", "jd": "", "nzb": "", "stopAll": False}
 QbTorrents = {}
 jd_downloads = {}
 nzb_jobs = {}
-DRIVES_NAMES = []
-DRIVES_IDS = []
-INDEX_URLS = []
-GLOBAL_EXTENSION_FILTER = ["aria2", "!qB"]
+drives_names = []
+drives_ids = []
+index_urls = []
+global_extension_filter = ["aria2", "!qB"]
 user_data = {}
 aria2_options = {}
 qbit_options = {}
@@ -92,7 +99,7 @@ if len(BOT_TOKEN) == 0:
     log_error("BOT_TOKEN variable is missing! Exiting now")
     exit(1)
 
-bot_id = BOT_TOKEN.split(":", 1)[0]
+BOT_ID = BOT_TOKEN.split(":", 1)[0]
 
 DATABASE_URL = environ.get("DATABASE_URL", "")
 if len(DATABASE_URL) == 0:
@@ -103,39 +110,35 @@ if DATABASE_URL:
         conn = MongoClient(DATABASE_URL, server_api=ServerApi("1"))
         db = conn.mltb
         current_config = dict(dotenv_values("config.env"))
-        old_config = db.settings.deployConfig.find_one({"_id": bot_id})
+        old_config = db.settings.deployConfig.find_one({"_id": BOT_ID})
         if old_config is None:
             db.settings.deployConfig.replace_one(
-                {"_id": bot_id}, current_config, upsert=True
+                {"_id": BOT_ID}, current_config, upsert=True
             )
         else:
             del old_config["_id"]
         if old_config and old_config != current_config:
             db.settings.deployConfig.replace_one(
-                {"_id": bot_id}, current_config, upsert=True
+                {"_id": BOT_ID}, current_config, upsert=True
             )
-        elif config_dict := db.settings.config.find_one({"_id": bot_id}):
+        elif config_dict := db.settings.config.find_one({"_id": BOT_ID}):
             del config_dict["_id"]
             for key, value in config_dict.items():
                 environ[key] = str(value)
-        if pf_dict := db.settings.files.find_one({"_id": bot_id}):
+        if pf_dict := db.settings.files.find_one({"_id": BOT_ID}):
             del pf_dict["_id"]
             for key, value in pf_dict.items():
                 if value:
                     file_ = key.replace("__", ".")
                     with open(file_, "wb+") as f:
                         f.write(value)
-                    if file_ == "cfg.zip":
-                        run(["rm", "-rf", "/JDownloader/cfg"])
-                        run(["7z", "x", "cfg.zip", "-o/JDownloader"])
-                        remove("cfg.zip")
-        if a2c_options := db.settings.aria2c.find_one({"_id": bot_id}):
+        if a2c_options := db.settings.aria2c.find_one({"_id": BOT_ID}):
             del a2c_options["_id"]
             aria2_options = a2c_options
-        if qbit_opt := db.settings.qbittorrent.find_one({"_id": bot_id}):
+        if qbit_opt := db.settings.qbittorrent.find_one({"_id": BOT_ID}):
             del qbit_opt["_id"]
             qbit_options = qbit_opt
-        if nzb_opt := db.settings.nzb.find_one({"_id": bot_id}):
+        if nzb_opt := db.settings.nzb.find_one({"_id": BOT_ID}):
             if ospath.exists("sabnzbd/SABnzbd.ini.bak"):
                 remove("sabnzbd/SABnzbd.ini.bak")
             del nzb_opt["_id"]
@@ -145,12 +148,18 @@ if DATABASE_URL:
                 f.write(value)
         conn.close()
         BOT_TOKEN = environ.get("BOT_TOKEN", "")
-        bot_id = BOT_TOKEN.split(":", 1)[0]
+        BOT_ID = BOT_TOKEN.split(":", 1)[0]
         DATABASE_URL = environ.get("DATABASE_URL", "")
     except Exception as e:
         LOGGER.error(f"Database ERROR: {e}")
 else:
     config_dict = {}
+
+if ospath.exists("cfg.zip"):
+    if ospath.exists("/JDownloader/cfg"):
+        rmtree("/JDownloader/cfg", ignore_errors=True)
+    run(["7z", "x", "cfg.zip", "-o/JDownloader"])
+    remove("cfg.zip")
 
 if not ospath.exists(".netrc"):
     with open(".netrc", "w"):
@@ -183,7 +192,7 @@ USER_SESSION_STRING = environ.get("USER_SESSION_STRING", "")
 if len(USER_SESSION_STRING) != 0:
     log_info("Creating client from USER_SESSION_STRING")
     try:
-        user = tgClient(
+        user = TgClient(
             "user",
             TELEGRAM_API,
             TELEGRAM_HASH,
@@ -239,7 +248,13 @@ AUTHORIZED_CHATS = environ.get("AUTHORIZED_CHATS", "")
 if len(AUTHORIZED_CHATS) != 0:
     aid = AUTHORIZED_CHATS.split()
     for id_ in aid:
-        user_data[int(id_.strip())] = {"is_auth": True}
+        chat_id, *thread_ids = id_.split("|")
+        chat_id = int(chat_id.strip())
+        if thread_ids:
+            thread_ids = list(map(lambda x: int(x.strip()), thread_ids))
+            user_data[chat_id] = {"is_auth": True, "thread_ids": thread_ids}
+        else:
+            user_data[chat_id] = {"is_auth": True}
 
 SUDO_USERS = environ.get("SUDO_USERS", "")
 if len(SUDO_USERS) != 0:
@@ -252,7 +267,7 @@ if len(EXTENSION_FILTER) > 0:
     fx = EXTENSION_FILTER.split()
     for x in fx:
         x = x.lstrip(".")
-        GLOBAL_EXTENSION_FILTER.append(x.strip().lower())
+        global_extension_filter.append(x.strip().lower())
 
 JD_EMAIL = environ.get("JD_EMAIL", "")
 JD_PASS = environ.get("JD_PASS", "")
@@ -494,21 +509,21 @@ config_dict = {
 }
 
 if GDRIVE_ID:
-    DRIVES_NAMES.append("Main")
-    DRIVES_IDS.append(GDRIVE_ID)
-    INDEX_URLS.append(INDEX_URL)
+    drives_names.append("Main")
+    drives_ids.append(GDRIVE_ID)
+    index_urls.append(INDEX_URL)
 
 if ospath.exists("list_drives.txt"):
     with open("list_drives.txt", "r+") as f:
         lines = f.readlines()
         for line in lines:
             temp = line.strip().split()
-            DRIVES_IDS.append(temp[1])
-            DRIVES_NAMES.append(temp[0].replace("_", " "))
+            drives_ids.append(temp[1])
+            drives_names.append(temp[0].replace("_", " "))
             if len(temp) > 2:
-                INDEX_URLS.append(temp[2])
+                index_urls.append(temp[2])
             else:
-                INDEX_URLS.append("")
+                index_urls.append("")
 
 if BASE_URL:
     Popen(
@@ -518,14 +533,14 @@ if BASE_URL:
 
 if ospath.exists("accounts.zip"):
     if ospath.exists("accounts"):
-        run(["rm", "-rf", "accounts"])
+        rmtree("accounts")
     run(["7z", "x", "-o.", "-aoa", "accounts.zip", "accounts/*.json"])
     run(["chmod", "-R", "777", "accounts"])
     remove("accounts.zip")
 if not ospath.exists("accounts"):
     config_dict["USE_SERVICE_ACCOUNTS"] = False
 
-qbittorrent_client = qbClient(
+qbittorrent_client = QbClient(
     host="localhost",
     port=8090,
     VERIFY_WEBUI_CERTIFICATE=False,
@@ -537,7 +552,7 @@ qbittorrent_client = qbClient(
     },
 )
 
-sabnzbd_client = sabnzbdClient(
+sabnzbd_client = SabnzbdClient(
     host="http://localhost",
     api_key="mltb",
     port="8070",
@@ -561,12 +576,11 @@ aria2c_global = [
 ]
 
 log_info("Creating client from BOT_TOKEN")
-bot = tgClient(
+bot = TgClient(
     "bot",
     TELEGRAM_API,
     TELEGRAM_HASH,
     bot_token=BOT_TOKEN,
-    workers=1000,
     parse_mode=enums.ParseMode.HTML,
     max_concurrent_transmissions=10,
 ).start()
@@ -583,7 +597,9 @@ def get_qb_options():
         for k in list(qbit_options.keys()):
             if k.startswith("rss"):
                 del qbit_options[k]
+        qbittorrent_client.app_set_preferences({"web_ui_password": "mltbmltb"})
     else:
+        qbit_options["web_ui_password"] = "mltbmltb"
         qb_opt = {**qbit_options}
         qbittorrent_client.app_set_preferences(qb_opt)
 

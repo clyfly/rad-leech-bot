@@ -17,27 +17,27 @@ from bot import (
     task_dict,
     botStartTime,
     DOWNLOAD_DIR,
-    Intervals,
+    intervals,
     bot,
 )
-from bot.helper.ext_utils.bot_utils import new_task, sync_to_async
-from bot.helper.ext_utils.status_utils import (
+from ..helper.ext_utils.bot_utils import sync_to_async, new_task
+from ..helper.ext_utils.status_utils import (
     MirrorStatus,
     get_readable_file_size,
     get_readable_time,
     speed_string_to_bytes,
 )
-from bot.helper.telegram_helper.bot_commands import BotCommands
-from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import (
-    sendMessage,
-    deleteMessage,
+from ..helper.telegram_helper.bot_commands import BotCommands
+from ..helper.telegram_helper.filters import CustomFilters
+from ..helper.telegram_helper.message_utils import (
+    send_message,
+    delete_message,
     auto_delete_message,
-    sendStatusMessage,
+    send_status_message,
     update_status_message,
-    editMessage,
+    edit_message,
 )
-from bot.helper.telegram_helper.button_build import ButtonMaker
+from ..helper.telegram_helper.button_build import ButtonMaker
 
 
 @new_task
@@ -52,7 +52,7 @@ async def mirror_status(_, message):
             f"\n<b>CPU:</b> {cpu_percent()}% | <b>FREE:</b> {free}"
             f"\n<b>RAM:</b> {virtual_memory().percent}% | <b>UPTIME:</b> {currentTime}"
         )
-        reply_message = await sendMessage(message, msg)
+        reply_message = await send_message(message, msg)
         await auto_delete_message(message, reply_message)
     else:
         text = message.text.split()
@@ -61,11 +61,11 @@ async def mirror_status(_, message):
         else:
             user_id = 0
             sid = message.chat.id
-            if obj := Intervals["status"].get(sid):
+            if obj := intervals["status"].get(sid):
                 obj.cancel()
-                del Intervals["status"][sid]
-        await sendStatusMessage(message, user_id)
-        await deleteMessage(message)
+                del intervals["status"][sid]
+        await send_status_message(message, user_id)
+        await delete_message(message)
 
 
 @new_task
@@ -176,7 +176,8 @@ async def status_pages(_, query):
 bot.add_handler(
     MessageHandler(
         mirror_status,
-        filters=command(BotCommands.StatusCommand) & CustomFilters.authorized,
+        filters=command(BotCommands.StatusCommand, case_sensitive=True)
+        & CustomFilters.authorized,
     )
 )
 bot.add_handler(CallbackQueryHandler(status_pages, filters=regex("^status")))

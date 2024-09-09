@@ -6,11 +6,8 @@ from asyncio import sleep
 from re import match
 
 from bot import config_dict, LOGGER, jd_lock, bot_name
-from bot.helper.ext_utils.bot_utils import (
-    cmd_exec,
-    new_task,
-)
-from myjd import Myjdapi
+from .bot_utils import cmd_exec, new_task
+from myjd import MyJdApi
 from myjd.exception import (
     MYJDException,
     MYJDAuthFailedException,
@@ -20,7 +17,7 @@ from myjd.exception import (
 )
 
 
-class JDownloader(Myjdapi):
+class JDownloader(MyJdApi):
     def __init__(self):
         super().__init__()
         self._username = ""
@@ -36,7 +33,7 @@ class JDownloader(Myjdapi):
         async with jd_lock:
             is_connected = await self.jdconnect()
             if is_connected:
-                self.boot()
+                await self.boot()
                 await self.connectToDevice()
 
     @new_task
@@ -79,7 +76,7 @@ class JDownloader(Myjdapi):
         cmd = "java -Dsun.jnu.encoding=UTF-8 -Dfile.encoding=UTF-8 -Djava.awt.headless=true -jar /JDownloader/JDownloader.jar"
         _, __, code = await cmd_exec(cmd, shell=True)
         if code != -9:
-            self.boot()
+            await self.boot()
 
     async def jdconnect(self):
         if not config_dict["JD_EMAIL"] or not config_dict["JD_PASS"]:

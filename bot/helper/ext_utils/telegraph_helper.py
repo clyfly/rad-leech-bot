@@ -82,3 +82,5 @@ class TelegraphHelper:
 telegraph = TelegraphHelper(
     "xyradinka", "https://t.me/xyradelw"
 )
+
+print(__name__)

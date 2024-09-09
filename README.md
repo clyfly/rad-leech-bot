@@ -84,7 +84,7 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 - Thumbnail (user and task option)
 - Leech filename prefix (user option)
 - Set upload as a document or as media (global and user option)
-- Upload all files to a specific chat (superGroup/channel/private) (global, user, and task option)
+- Upload all files to a specific chat (superGroup/channel/private/topic) (global, user, and task option)
 - Equal split size settings (global and user option)
 - Ability to leech split file parts in a media group (global and user option)
 - Download restricted messages (document or link) by tg private/public/super links (task option)
@@ -209,7 +209,11 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 > shrdsk.me (
 > sharedisk.io), akmfiles.com, wetransfer.com, pcloud.link, gofile.io (file/folders), easyupload.io, mdisk.me (with
 > ytdl),
+<<<<<<< HEAD
 > tmpsend.com, mega.co.nz, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
+=======
+> tmpsend.com, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
+>>>>>>> mltb/master
 
 # How to deploy?
 
@@ -281,12 +285,10 @@ quotes, even if it's `Int`, `Bool` or `List`.
   *NOTE**: You can't use bot with private message. Use it with superGroup.
 - `DATABASE_URL`: Your Mongo Database URL (Connection string). Follow
   this [Generate Database](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#generate-database) to
-  generate database. Data will be saved in Database: auth and sudo users, users settings including thumbnails for each
-  user, rss data and incomplete tasks. **NOTE**: You can always edit all settings that saved in database from the
-  official site -> (Browse collections). `Str`
-- `DOWNLOAD_DIR`: The path to the local folder where the downloads should be downloaded to. `Str`
-- `CMD_SUFFIX`: commands index number. This number will added at the end all commands. `Str`|`Int`
-- `AUTHORIZED_CHATS`: Fill user_id and chat_id of groups/users you want to authorize. Separate them by space. `Int`
+  generate database. Data will be saved in Database: bot settings, users settings, rss data and incomplete tasks. **NOTE**: You can always edit all settings that saved in database from the official site -> (Browse collections). `Str`
+- `DOWNLOAD_DIR`: The path to the vps local folder where the downloads should be downloaded to. `Str`
+- `CMD_SUFFIX`: Commands index number. This number will added at the end all commands. `Str`|`Int`
+- `AUTHORIZED_CHATS`: Fill user_id and chat_id of groups/users you want to authorize. To auth only specific topic(s) write it in this format `chat_id|thread_id` Ex:-100XXXXXXXXXXX|10 or Ex:-100XXXXXXXXXXX|10|12. Separate them by space. `Int`
 - `SUDO_USERS`: Fill user_id of users whom you want to give sudo permission. Separate them by space. `Int`
 - `DEFAULT_UPLOAD`: Whether `rc` to upload to `RCLONE_PATH` or `gd` to upload to `GDRIVE_ID`. Default is `gd`. Read
   More [HERE](https://github.com/anasty17/mirror-leech-telegram-bot/tree/master#upload).`Str`
@@ -309,9 +311,9 @@ quotes, even if it's `Int`, `Bool` or `List`.
 - `USE_SERVICE_ACCOUNTS`: Whether to use Service Accounts or not, with google-api-python-client. For this to work
   see [Using Service Accounts](https://github.com/anasty17/mirror-leech-telegram-bot#generate-service-accounts-what-is-service-account)
   section below. Default is `False`. `Bool`
-- `NAME_SUBSTITUTE`: Add word/letter/sentense/pattern to remove or replace with other words with sensitive case or without.**Notes**: 
+- `NAME_SUBSTITUTE`: Add word/letter/sentense/pattern to remove or replace with other words with sensitive case or without. **Notes**: 
   1. Seed will get disbaled while using this option
-  2. Before any character you must add \, those are the characters: `\^$.|?*+()[]{}-`
+  2. Before any character you must add `\BACKSLASH`, those are the characters: `\^$.|?*+()[]{}-`
   * Example-1: `text : code : s | mirror : leech | tea :  : s | clone`
     - text will get replaced by code with sensitive case
     - mirror will get replaced by leech
@@ -384,8 +386,12 @@ quotes, even if it's `Int`, `Bool` or `List`.
 
 - `JD_EMAIL`: jdownlaoder email sign up on [JDownloader](https://my.jdownloader.org/)
 - `JD_PASS`: jdownlaoder password
+<<<<<<< HEAD
 - `MEGA_EMAIL`: Your mega email acc
 - `MEGA_PASSWORD`:Your mega password acc
+=======
+  - **JDownloader Config**: You can use your config from local device to bot by *zipping* cfg folder (cfg.zip) and add it in repo folder but *before zip* you must change the downloads directory to `/root/Downloads`.
+>>>>>>> mltb/master
 
 **9. Sabnzbd**
 
@@ -395,8 +401,7 @@ quotes, even if it's `Int`, `Bool` or `List`.
 
   - [READ THIS FOR MORE INFORMATION](https://sabnzbd.org/wiki/configuration/4.2/servers)
 
-  - **NOTE**: Enable port 8070 in your vps to access sabnzbd full web interface
-  - Open port 8070 in your vps to access web interface from any device. Use it like http://ip:8070/sabnzbd/.
+  - Open port 8070 in your vps to access full web interface from any device. Use it like http://ip:8070/sabnzbd/.
 
 **10. RSS**
 
