@@ -1,4 +1,4 @@
-FROM dawn001/z_mirror:main
+FROM clyfly/zyradaexmltb:main
 
 WORKDIR /usr/src/app
 RUN chmod 777 /usr/src/app

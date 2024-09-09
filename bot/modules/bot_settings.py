@@ -959,6 +959,14 @@ async def load_config():
     if DEFAULT_UPLOAD != "rc":
         DEFAULT_UPLOAD = "gd"
 
+    DISABLE_DRIVE_LINK = environ.get(
+        "DISABLE_DRIVE_LINK",
+        ""
+    )
+    DISABLE_DRIVE_LINK = DISABLE_DRIVE_LINK.lower() == "true"
+    if len(INDEX_URL) == 0:
+        DISABLE_DRIVE_LINK = "false"
+
     RCLONE_FLAGS = environ.get("RCLONE_FLAGS", "")
     if len(RCLONE_FLAGS) == 0:
         RCLONE_FLAGS = ""
@@ -1229,6 +1237,7 @@ async def load_config():
             "CMD_SUFFIX": CMD_SUFFIX,
             "DATABASE_URL": DATABASE_URL,
             "DEFAULT_UPLOAD": DEFAULT_UPLOAD,
+            "DISABLE_DRIVE_LINK": DISABLE_DRIVE_LINK,
             "DOWNLOAD_DIR": DOWNLOAD_DIR,
             "EQUAL_SPLITS": EQUAL_SPLITS,
             "EXTENSION_FILTER": EXTENSION_FILTER,

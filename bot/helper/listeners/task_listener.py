@@ -283,10 +283,12 @@ class TaskListener(TaskConfig):
                 and not self.privateLink
             ):
                 buttons = ButtonMaker()
-                if link:
-                    buttons.ubutton("ᴅʀɪᴠᴇ ʟɪɴᴋ", link, "header")
+                if link.startswith("https://drive.google.com/") and not config_dict["DISABLE_DRIVE_LINK"]:
+                  buttons.ubutton("ᴅʀɪᴠᴇ ʟɪɴᴋ", link, "header")
+                elif not link.startswith("https://drive.google.com/"):
+                  buttons.ubutton("ᴄʟᴏᴜᴅ ʟɪɴᴋ", link)
                 else:
-                    msg += f"\n\nPath: <code>{rclonePath}</code>"
+                    msg += f"\nPath  : <code>{rclonePath}</code>"
                 if (
                     rclonePath
                     and (RCLONE_SERVE_URL := config_dict["RCLONE_SERVE_URL"])
@@ -306,13 +308,16 @@ class TaskListener(TaskConfig):
                         INDEX_URL = config_dict["INDEX_URL"]
                     if INDEX_URL:
                         share_url = f"{INDEX_URL}findpath?id={dir_id}"
-                        buttons.ubutton("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url)
+                        if config_dict["DISABLE_DRIVE_LINK"]:
+                          buttons.ubutton("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url, "header")
+                        else:
+                          buttons.ubutton("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url)
                         if mime_type.startswith(("image", "video", "audio")):
                             share_urls = f"{INDEX_URL}findpath?id={dir_id}&view=true"
                             buttons.ubutton("ᴠɪᴇᴡ ʟɪɴᴋ", share_urls)
                 button = buttons.build_menu(2)
             else:
-                msg += f"\n\nPath: <code>{rclonePath}</code>"
+                msg += f"\n<b>Path  : </b>{rclonePath}"
                 button = None
             msg += f"\n<b>User : </b>{self.tag}"
             msg += f"\n<b>UID  : </b><code>{self.message.from_user.id}</code>\n"
