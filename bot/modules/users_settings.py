@@ -116,6 +116,16 @@ async def get_user_settings(from_user):
     else:
         mixed_leech = "Disabled"
 
+    if user_dict.get("metadatatext", False):
+        metadatatext = user_dict["metadatatext"]
+    else:
+        metadatatext = "None"
+
+    if user_dict.get("attachmenturl", False):
+        attachmenturl = user_dict["attachmenturl"]
+    else:
+        attachmenturl = "None"
+
     buttons.data_button("Leech Settings", f"userset {user_id} leech")
 
     buttons.data_button("Rclone Tools", f"userset {user_id} rclone")
@@ -499,6 +509,17 @@ async def edit_user_settings(client, query):
             )
         else:
             mixed_leech = "Disabled"
+        buttons.data_button("Metadata Text", f"userset {user_id} metadata_text")
+        if user_dict.get("metadatatext", False):
+            metadatatext = user_dict["metadatatext"]
+        else:
+            metadatatext = "None"
+
+        buttons.data_button("Attachment Url", f"userset {user_id} attachment_url")
+        if user_dict.get("attachmenturl", False):
+            attachmenturl = user_dict["attachmenturl"]
+        else:
+            attachmenturl = "None"
 
         buttons.data_button("Back", f"userset {user_id} back")
         buttons.data_button("Close", f"userset {user_id} close")
@@ -512,6 +533,8 @@ Leech Prefix is <code>{escape(lprefix)}</code>
 Dump Chat is <code>{leech_dest}</code>
 Leech by <b>{leech_method}</b> session
 Mixed Leech is <b>{mixed_leech}</b>
+Leech Metadata Text is <code>{escape(metadatatext)}</code>
+Leech Attachment Url is <code>{escape(attachmenturl)}</code>
 """
         await edit_message(message, text, buttons.build_menu(2))
     elif data[2] == "rclone":
@@ -697,6 +720,39 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
             buttons.build_menu(1),
         )
         pfunc = partial(set_option, pre_event=query, option="lprefix")
+        await event_handler(client, query, pfunc)
+    elif data[2] == "metadata_text":
+        await query.answer()
+        buttons = ButtonMaker()
+        if (
+            user_dict.get("metadatatext", False)
+        ):
+            buttons.data_button("Remove Leech Metadata Text", f"userset {user_id} metadatatext")
+        buttons.data_button("Back", f"userset {user_id} leech")
+        buttons.data_button("Close", f"userset {user_id} close")
+        await editMessage(
+            message,
+            "Send Leech Metadata Text. Timeout: 60 sec",
+            buttons.build_menu(1),
+        )
+        pfunc = partial(set_option, pre_event=query, option="metadatatext")
+        await event_handler(client, query, pfunc)
+
+    elif data[2] == "attachment_url":
+        await query.answer()
+        buttons = ButtonMaker()
+        if (
+            user_dict.get("attachmenturl", False)
+        ):
+            buttons.data_button("Remove Attachment Url", f"userset {user_id} attachmenturl")
+        buttons.data_button("Back", f"userset {user_id} leech")
+        buttons.data_button("Close", f"userset {user_id} close")
+        await editMessage(
+            message,
+            "Send Attachment Url. Timeout: 60 sec",
+            buttons.build_menu(1),
+        )
+        pfunc = partial(set_option, pre_event=query, option="attachmenturl")
         await event_handler(client, query, pfunc)
     elif data[2] == "ldest":
         await query.answer()

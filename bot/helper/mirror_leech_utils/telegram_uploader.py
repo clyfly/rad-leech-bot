@@ -30,6 +30,7 @@ from bot import config_dict, user, bot, bot_name
 from ..ext_utils.bot_utils import sync_to_async
 from ..ext_utils.files_utils import clean_unwanted, is_archive, get_base_name
 from ..telegram_helper.message_utils import delete_message
+from ..ext_utils.metadata import edit_video_metadata, add_attachment
 from ..ext_utils.media_utils import (
     get_media_info,
     get_document_type,
@@ -391,6 +392,8 @@ class TelegramUploader:
                     progress=self._upload_progress,
                 )
             elif is_video:
+                await edit_video_metadata (user_id=self._listener.message.from_user.id, file_path=self._up_path)
+                await add_attachment (user_id=self._listener.message.from_user.id, file_path=self._up_path)
                 key = "videos"
                 duration = (await get_media_info(self._up_path))[0]
                 if thumb is None:
