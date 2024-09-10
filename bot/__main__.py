@@ -75,27 +75,43 @@ async def stats(_, message):
         last_commit = last_commit[0]
     else:
         last_commit = "No UPSTREAM_REPO"
+
     total, used, free, disk = disk_usage("/")
-    swap = swap_memory()
-    memory = virtual_memory()
+    swap                       = swap_memory()
+    memory                     = virtual_memory()
+    bot_uptime                 = get_readable_time(time() - botStartTime)
+    os_uptime                  = get_readable_time(time() - boot_time())
+    upload                     = get_readable_file_size(net_io_counters().bytes_sent)
+    download                   = get_readable_file_size(net_io_counters().bytes_recv)
+    cpu_usage                  = cpu_percent(interval=0.5)
+    ram_usage                  = memory.percent
+    swap_total                 = get_readable_file_size(swap.total)
+    swap_used_percent          = swap.percent
+    memory_total               = get_readable_file_size(memory.total)
+    memory_free                = get_readable_file_size(memory.available)
+    memory_used                = get_readable_file_size(memory.used)
+    physical_cores             = cpu_count(logical=False)
+    total_cores                = cpu_count(logical=True)
+
     stats = (
         f"<b>Commit Date:</b> {last_commit}\n\n"
-        f"<b>Bot Uptime:</b> {get_readable_time(time() - botStartTime)}\n"
-        f"<b>OS Uptime:</b> {get_readable_time(time() - boot_time())}\n\n"
+        f"<b>Bot Uptime:</b> {bot_uptime}\n"
+        f"<b>OS Uptime:</b> {os_uptime}\n\n"
         f"<b>Total Disk Space:</b> {get_readable_file_size(total)}\n"
         f"<b>Used:</b> {get_readable_file_size(used)} | <b>Free:</b> {get_readable_file_size(free)}\n\n"
-        f"<b>Upload:</b> {get_readable_file_size(net_io_counters().bytes_sent)}\n"
-        f"<b>Download:</b> {get_readable_file_size(net_io_counters().bytes_recv)}\n\n"
-        f"<b>CPU:</b> {cpu_percent(interval=0.5)}%\n"
-        f"<b>RAM:</b> {memory.percent}%\n"
+        f"<b>Upload:</b> {upload}\n"
+        f"<b>Download:</b> {download}\n\n"
+        f"<b>CPU:</b> {cpu_usage}%\n"
+        f"<b>RAM:</b> {ram_usage}%\n"
         f"<b>DISK:</b> {disk}%\n\n"
-        f"<b>Physical Cores:</b> {cpu_count(logical=False)}\n"
-        f"<b>Total Cores:</b> {cpu_count(logical=True)}\n\n"
-        f"<b>SWAP:</b> {get_readable_file_size(swap.total)} | <b>Used:</b> {swap.percent}%\n"
-        f"<b>Memory Total:</b> {get_readable_file_size(memory.total)}\n"
-        f"<b>Memory Free:</b> {get_readable_file_size(memory.available)}\n"
-        f"<b>Memory Used:</b> {get_readable_file_size(memory.used)}\n"
+        f"<b>Physical Cores:</b> {physical_cores}\n"
+        f"<b>Total Cores:</b> {total_cores}\n\n"
+        f"<b>SWAP:</b> {swap_total} | <b>Used:</b> {swap_used_percent}%\n"
+        f"<b>Memory Total:</b> {memory_total}\n"
+        f"<b>Memory Free:</b> {memory_free}\n"
+        f"<b>Memory Used:</b> {memory_used}\n"
     )
+
     await send_message(message, stats)
 
 

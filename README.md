@@ -209,11 +209,7 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 > shrdsk.me (
 > sharedisk.io), akmfiles.com, wetransfer.com, pcloud.link, gofile.io (file/folders), easyupload.io, mdisk.me (with
 > ytdl),
-<<<<<<< HEAD
-> tmpsend.com, mega.co.nz, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
-=======
-> tmpsend.com, qiwi.gg, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
->>>>>>> mltb/master
+> tmpsend.com, qiwi.gg,mega.co.nz, berkasdrive.com, mp4upload.com, terabox.com (videos only file/folders).
 
 # How to deploy?
 
@@ -386,12 +382,9 @@ quotes, even if it's `Int`, `Bool` or `List`.
 
 - `JD_EMAIL`: jdownlaoder email sign up on [JDownloader](https://my.jdownloader.org/)
 - `JD_PASS`: jdownlaoder password
-<<<<<<< HEAD
 - `MEGA_EMAIL`: Your mega email acc
 - `MEGA_PASSWORD`:Your mega password acc
-=======
   - **JDownloader Config**: You can use your config from local device to bot by *zipping* cfg folder (cfg.zip) and add it in repo folder but *before zip* you must change the downloads directory to `/root/Downloads`.
->>>>>>> mltb/master
 
 **9. Sabnzbd**
 
@@ -847,8 +840,8 @@ separated by a new line.
 </details>
 ## All Thanks To Our Contributors
 
-<a href="https://github.com/anasty17/mirror-leech-telegram-bot/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=anasty17/mirror-leech-telegram-bot" />
+<a href="https://github.com/clyfly/rad-leech-bot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=clyfly/rad-leech-bot" />
 </a>
 
 ## Donations
