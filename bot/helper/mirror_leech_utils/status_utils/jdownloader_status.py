@@ -65,6 +65,7 @@ class JDownloaderStatus:
         self.listener = listener
         self._gid = gid
         self._info = {}
+        self.engine = "JDownloader"
 
     async def _update(self):
         self._info = await get_download(int(self._gid), self._info)

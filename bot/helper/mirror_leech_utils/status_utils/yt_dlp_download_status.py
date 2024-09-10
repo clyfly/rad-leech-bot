@@ -12,6 +12,7 @@ class YtDlpStatus:
         self._gid = gid
         self.listener = listener
         self._proccessed_bytes = 0
+        self.engine = "Yt-DLP"
 
     def gid(self):
         return self._gid

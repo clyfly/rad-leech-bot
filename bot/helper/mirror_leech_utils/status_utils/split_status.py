@@ -7,6 +7,7 @@ class SplitStatus:
         self.listener = listener
         self._gid = gid
         self._size = self.listener.size
+        self.engine = "-"
 
     def gid(self):
         return self._gid

@@ -31,6 +31,7 @@ class SabnzbdStatus:
         self.cstatus = status
         self._gid = gid
         self._info = None
+        self.engine = "Usenet"
 
     async def update(self):
         self._info = await get_download(self._gid, self._info)

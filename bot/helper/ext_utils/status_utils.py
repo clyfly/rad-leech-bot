@@ -185,6 +185,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
                 f"\n<code>Size   :</code> {task.size()}"
                 f"\n<code>Done   :</code> {task.processed_bytes()}"
                 f"\n<code>Speed  :</code> {task.speed()}"
+                f"\n<code>Engine :</code> {task.engine}"
                 f"\n<code>ETA    :</code> {task.eta()}"
                 f"\n<code>User   :</code> {user_tag}"
                 f"\n<code>UserID :</code> {task.listener.message.from_user.id}"

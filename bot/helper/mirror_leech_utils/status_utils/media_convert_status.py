@@ -7,6 +7,7 @@ class MediaConvertStatus:
         self.listener = listener
         self._gid = gid
         self._size = self.listener.size
+        self.engine = "FFmpeg"
 
     def gid(self):
         return self._gid

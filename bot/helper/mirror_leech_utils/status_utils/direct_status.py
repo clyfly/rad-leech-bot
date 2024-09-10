@@ -10,6 +10,7 @@ class DirectStatus:
         self._gid = gid
         self._obj = obj
         self.listener = listener
+        self.engine = "DDL"
 
     def gid(self):
         return self._gid
