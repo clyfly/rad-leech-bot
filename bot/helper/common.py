@@ -169,7 +169,7 @@ class TaskConfig:
             )
         )
         if self.name_sub:
-            self.name_sub = [x.split(" : ") for x in self.name_sub.split(" | ")]
+            self.name_sub = [x.split("/") for x in self.name_sub.split(" | ")]
             self.seed = False
         self.extension_filter = self.user_dict.get("excluded_extensions") or (
             global_extension_filter
@@ -177,7 +177,11 @@ class TaskConfig:
             else ["aria2", "!qB"]
         )
         if self.link not in ["rcl", "gdl"]:
-            if not self.is_jd and is_rclone_path(self.link) or is_gdrive_link(self.link):
+            if (
+                not self.is_jd
+                and is_rclone_path(self.link)
+                or is_gdrive_link(self.link)
+            ):
                 await self.is_token_exists(self.link, "dl")
         elif self.link == "rcl":
             if not self.is_ytdlp and not self.is_jd:
@@ -290,9 +294,12 @@ class TaskConfig:
                         self.mixed_leech = self.user_transmission
                     if "|" in self.up_dest:
                         self.up_dest, self.chat_thread_id = list(
-                            map(int, self.up_dest.split("|", 1))
+                            map(
+                                lambda x: int(x) if x.lstrip("-").isdigit() else x,
+                                self.up_dest.split("|", 1),
+                            )
                         )
-                    elif self.up_dest.isdigit() or self.up_dest.startswith("-"):
+                    elif self.up_dest.lstrip("-").isdigit():
                         self.up_dest = int(self.up_dest)
                     elif self.up_dest.lower() == "pm":
                         self.up_dest = self.user_id
@@ -956,13 +963,20 @@ class TaskConfig:
         if await aiopath.isfile(dl_path):
             up_dir, name = dl_path.rsplit("/", 1)
             for substitution in self.name_sub:
+                sen = False
                 pattern = substitution[0]
-                res = (
-                    substitution[1] if len(substitution) > 1 and substitution[1] else ""
-                )
-                sen = len(substitution) > 2 and substitution[2] == "s"
-                new_name = sub(rf"{pattern}", res, name, flags=I if sen else 0)
-            new_path = ospath.join(up_dir, new_name)
+                if len(substitution) > 1:
+                    if len(substitution) > 2:
+                        sen = substitution[2] == "s"
+                        res = substitution[1]
+                    elif len(substitution[1]) == 0:
+                        res = " "
+                    else:
+                        res = substitution[1]
+                else:
+                    res = ""
+                name = sub(rf"{pattern}", res, name, flags=I if sen else 0)
+            new_path = ospath.join(up_dir, name)
             await move(dl_path, new_path)
             return new_path
         else:
@@ -970,13 +984,18 @@ class TaskConfig:
                 for file_ in files:
                     f_path = ospath.join(dirpath, file_)
                     for substitution in self.name_sub:
+                        sen = False
                         pattern = substitution[0]
-                        res = (
-                            substitution[1]
-                            if len(substitution) > 1 and substitution[1]
-                            else ""
-                        )
-                        sen = len(substitution) > 2 and substitution[2] == "s"
-                        new_name = sub(rf"{pattern}", res, file_, flags=I if sen else 0)
-                    await move(f_path, ospath.join(dirpath, new_name))
+                        if len(substitution) > 1:
+                            if len(substitution) > 2:
+                                sen = substitution[2] == "s"
+                                res = substitution[1]
+                            elif len(substitution[1]) == 0:
+                                res = " "
+                            else:
+                                res = substitution[1]
+                        else:
+                            res = ""
+                        file_ = sub(rf"{pattern}", res, file_, flags=I if sen else 0)
+                    await move(f_path, ospath.join(dirpath, file_))
             return dl_path

@@ -307,18 +307,17 @@ quotes, even if it's `Int`, `Bool` or `List`.
 - `USE_SERVICE_ACCOUNTS`: Whether to use Service Accounts or not, with google-api-python-client. For this to work
   see [Using Service Accounts](https://github.com/anasty17/mirror-leech-telegram-bot#generate-service-accounts-what-is-service-account)
   section below. Default is `False`. `Bool`
-- `NAME_SUBSTITUTE`: Add word/letter/sentense/pattern to remove or replace with other words with sensitive case or without. **Notes**: 
+- `NAME_SUBSTITUTE`: Add word/letter/character/sentense/pattern to remove or replace with other words with sensitive case or without. **Notes**:
   1. Seed will get disbaled while using this option
   2. Before any character you must add `\BACKSLASH`, those are the characters: `\^$.|?*+()[]{}-`
-  * Example-1: `text : code : s | mirror : leech | tea :  : s | clone`
-    - text will get replaced by code with sensitive case
-    - mirror will get replaced by leech
-    - tea will get removed with sensitive case
-    - clone will get removed
-  * Example-2: `\(text\) | \[test\] : test | \\text\\ : text : s`
-    - `(text)` will get removed
-    - `[test]` will get replaced by test
-    - `\text\` will get replaced by text with sensitive case
+  * Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb | \\text\\/text/s
+   - script will get replaced by code with sensitive case
+   - mirror will get replaced by leech
+   - tea will get replaced by space with sensitive case
+   - clone will get removed
+   - cpu will get replaced by space
+   - [mltb] will get replaced by mltb
+   - \text\ will get replaced by text with sensitive case
 
 **3. GDrive Tools**
 
@@ -400,7 +399,7 @@ quotes, even if it's `Int`, `Bool` or `List`.
 
 - `RSS_DELAY`: Time in seconds for rss refresh interval. Recommended `600` second at least. Default is `600` in
   sec. `Int`
-- `RSS_CHAT`: Chat ID/USERNAME where rss links will be sent. If you want message to be sent to the channel then add
+- `RSS_CHAT`: Chat `ID or USERNAME or ID|TOPIC_ID or USERNAME|TOPIC_ID` where rss links will be sent. If you want message to be sent to the channel then add
   channel id. Add `-100` before channel id. `Int`|`Str`
     - **RSS NOTES**: `RSS_CHAT` is required, otherwise monitor will not work. You must use `USER_STRING_SESSION` --OR--
       *CHANNEL*. If using channel then bot should be added in both channel and group(linked to channel) and `RSS_CHAT`

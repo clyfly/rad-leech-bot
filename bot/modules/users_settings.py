@@ -291,9 +291,12 @@ async def set_option(_, message, pre_event, option):
         if not value.isdigit():
             value = get_size_bytes(value)
         value = min(int(value), MAX_SPLIT_SIZE)
+<<<<<<< HEAD
     elif option == "leech_dest":
         if "|" not in value and (value.startswith("-") or value.isdigit()):
             value = int(value)
+=======
+>>>>>>> mltb/master
     elif option == "excluded_extensions":
         fx = value.split()
         value = ["aria2", "!qB"]
@@ -806,15 +809,14 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         buttons.data_button("Close", f"userset {user_id} close")
         emsg = r"""Word Subtitions. You can add pattern instead of normal text. Timeout: 60 sec
 NOTE: You must add \ before any character, those are the characters: \^$.|?*+()[]{}-
-Example-1: text : code : s|mirror : leech|tea :  : s|clone
-1. text will get replaced by code with sensitive case
+Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb | \\text\\/text/s
+1. script will get replaced by code with sensitive case
 2. mirror will get replaced by leech
-4. tea will get removed with sensitive case
+4. tea will get replaced by space with sensitive case
 5. clone will get removed
-Example-2: \(text\) | \[test\] : test | \\text\\ : text : s
-1. (text) will get removed
-2. [test] will get replaced by test
-3. \text\ will get replaced by text with sensitive case
+6. cpu will get replaced by space
+7. [mltb] will get replaced by mltb
+8. \text\ will get replaced by text with sensitive case
 """
         emsg += f"Your Current Value is {user_dict.get('name_sub') or 'not added yet!'}"
         await edit_message(
