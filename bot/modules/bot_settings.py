@@ -262,6 +262,9 @@ async def edit_variable(_, message, pre_message, key):
     elif key == "DOWNLOAD_DIR":
         if not value.endswith("/"):
             value += "/"
+    elif key in ["LEECH_DUMP_CHAT", "RSS_CHAT"]:
+        if "|" not in value and (value.isdigit() or value.startswith("-")):
+            value = int(value)
     elif key == "STATUS_UPDATE_INTERVAL":
         value = int(value)
         if len(task_dict) != 0 and (st := intervals["status"]):
