@@ -2,7 +2,6 @@
   <h1>XYR-MLTB</h1>
 </p>
 
-<<<<<<< HEAD
 Welcome to XYR-MLTB, an advanced, feature-rich fork of the renowned Anasty Mirror Leech Telegram Bot. This repository offers a robust and efficient solution for file mirroring and leeching via Telegram, incorporating various enhancements and modules from open-source contributors.
 
 ## Overview
@@ -54,11 +53,8 @@ Whether you're a casual user looking for ease of file download or an advanced us
 Feel free to use and customize XYR-MLTB to fit your needs. For more information and to get started, please refer to the documentation and setup instructions provided in this repository.
 
 <details>
-=======
 - **TELEGRAM CHANNEL:** https://t.me/mltb_official_channel
 - **TELEGRAM GROUP:** https://t.me/mltb_official_support
-
->>>>>>> mltb/master
 # Features
 
 ## qBittorrent

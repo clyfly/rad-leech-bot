@@ -12,7 +12,7 @@ class TelegramStatus:
         self._size = self.listener.size
         self._gid = gid
         self._status = status
-        self.engine = "DendroGram"
+        self.engine = "Pyrofork"
 
     def processed_bytes(self):
         return get_readable_file_size(self._obj.processed_bytes)

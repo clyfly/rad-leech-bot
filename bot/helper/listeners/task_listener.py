@@ -263,7 +263,7 @@ class TaskListener(TaskConfig):
             await database.rm_complete_task(self.message.link)
         msg = (
           f"<b><i>{escape(self.name)}</i></b>\n"
-          f"\n<code>Size   : </code>{get_readable_file_size(size)}"
+          f"\n<code>Size   : </code>{get_readable_file_size(self.size)}"
           f"\n<code>User   : </code>{self.tag}"
           f"\n<code>UserID : </code>{self.message.from_user.id}"
           )
@@ -274,16 +274,15 @@ class TaskListener(TaskConfig):
             if mime_type != 0:
                 msg += f"\n<code>Corrupt:  </code>{mime_type}"
             if not files:
-                msg += f"\n<b><i>Files has been sent to your DM.</i></b>"
+                msg += f"\n\n<b><i>Files has been sent to your DM.</i></b>"
                 await send_message(self.message, msg)
             else:
-                msg += f"\n<b><i>Files has been sent to your DC.</i></b>"
+                msg += f"\n\n<b><i>Files has been sent to your DC.</i></b>"
                 await send_message(self.message, msg)
         else:
             msg += f"\n<code>Type   : </code>{mime_type}"
             if mime_type == "Folder":
                 msg += f"\n<code>Files  : </code>{files}"
-                msg += f"\n<b>Files: </b>{files}"
             if (
                 link
                 or rclonePath
@@ -325,10 +324,8 @@ class TaskListener(TaskConfig):
                             buttons.url_button("ᴠɪᴇᴡ ʟɪɴᴋ", share_urls)
                 button = buttons.build_menu(2)
             else:
-                msg += f"\n<b>Path  : </b>{rclonePath}"
+                msg += f"\n<code>Path   : </code>{rclonePath}"
                 button = None
-            msg += f"\n<b>User : </b>{self.tag}"
-            msg += f"\n<b>UID  : </b><code>{self.message.from_user.id}</code>\n"
             msg += f"\n<b><i>Click the button below to Download</b></i>"
             await send_message(self.message, msg, button)
         if self.seed:

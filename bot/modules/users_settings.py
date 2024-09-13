@@ -185,18 +185,18 @@ async def get_user_settings(from_user):
 
     buttons.data_button("Close", f"userset {user_id} close")
 
-    text = f"""<u>🔧 User Settings Overview</u>
+    text = f"""<u>🔧 User Settings Overview</u>  
 <i><b>Only key settings are shown here. Click on specific menus for detailed configurations.</b></i>
 
-Leech Type        : <b>{ltype}</b>
-Leech Split Size  : <b>{split_size}</b>
-Equal Splits      : <b>{equal_splits}</b>
-Leech Method      : <b>{leech_method}</b>
-Media Group       : <b>{media_group}</b>
-Upload Paths      : <b>{upload_paths}</b>
-Stop Duplicate    : <b>{sd_msg}</b>
-Default Upload    : <b>{du}</b>
-YT-DLP Options    : <code>{escape(ytopt)}</code>"""
+<code>Leech Type        :</code> {ltype}  
+<code>Leech Split Size  :</code> {split_size}  
+<code>Equal Splits      :</code> {equal_splits}  
+<code>Leech Method      :</code> {leech_method}  
+<code>Media Group       :</code> {media_group}  
+<code>Upload Paths      :</code> {upload_paths}  
+<code>Stop Duplicate    :</code> {sd_msg}  
+<code>Default Upload    :</code> {du}  
+<code>YT-DLP Options    :</code> {ytopt}"""
 
     return text, buttons.build_menu(2)
 
