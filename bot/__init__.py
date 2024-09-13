@@ -90,6 +90,7 @@ nzb_listener_lock = Lock()
 jd_lock = Lock()
 cpu_eater_lock = Lock()
 subprocess_lock = Lock()
+same_directory_lock = Lock()
 status_dict = {}
 task_dict = {}
 rss_dict = {}
@@ -440,6 +441,9 @@ NAME_SUBSTITUTE = "" if len(NAME_SUBSTITUTE) == 0 else NAME_SUBSTITUTE
 MIXED_LEECH = environ.get("MIXED_LEECH", "")
 MIXED_LEECH = MIXED_LEECH.lower() == "true" and IS_PREMIUM_USER
 
+THUMBNAIL_LAYOUT = environ.get("THUMBNAIL_LAYOUT", "")
+THUMBNAIL_LAYOUT = "" if len(THUMBNAIL_LAYOUT) == 0 else THUMBNAIL_LAYOUT
+
 config_dict = {
     "AS_DOCUMENT": AS_DOCUMENT,
     "AUTHORIZED_CHATS": AUTHORIZED_CHATS,
@@ -493,6 +497,7 @@ config_dict = {
     "TELEGRAM_API": TELEGRAM_API,
     "TELEGRAM_HASH": TELEGRAM_HASH,
     "THUMBNAIL_IMAGES": THUMBNAIL_IMAGES,
+    "THUMBNAIL_LAYOUT": THUMBNAIL_LAYOUT,
     "TORRENT_TIMEOUT": TORRENT_TIMEOUT,
     "USER_TRANSMISSION": USER_TRANSMISSION,
     "UPSTREAM_REPO": UPSTREAM_REPO,

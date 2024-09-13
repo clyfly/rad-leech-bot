@@ -2,6 +2,7 @@
   <h1>XYR-MLTB</h1>
 </p>
 
+<<<<<<< HEAD
 Welcome to XYR-MLTB, an advanced, feature-rich fork of the renowned Anasty Mirror Leech Telegram Bot. This repository offers a robust and efficient solution for file mirroring and leeching via Telegram, incorporating various enhancements and modules from open-source contributors.
 
 ## Overview
@@ -53,6 +54,11 @@ Whether you're a casual user looking for ease of file download or an advanced us
 Feel free to use and customize XYR-MLTB to fit your needs. For more information and to get started, please refer to the documentation and setup instructions provided in this repository.
 
 <details>
+=======
+- **TELEGRAM CHANNEL:** https://t.me/mltb_official_channel
+- **TELEGRAM GROUP:** https://t.me/mltb_official_support
+
+>>>>>>> mltb/master
 # Features
 
 ## qBittorrent
@@ -83,13 +89,15 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 - Split size (global, user, and task option)
 - Thumbnail (user and task option)
 - Leech filename prefix (user option)
-- Set upload as a document or as media (global and user option)
+- Set upload as a document or as media (global, user and task option)
 - Upload all files to a specific chat (superGroup/channel/private/topic) (global, user, and task option)
 - Equal split size settings (global and user option)
 - Ability to leech split file parts in a media group (global and user option)
 - Download restricted messages (document or link) by tg private/public/super links (task option)
 - Choose transfer by bot or user session in case you have a premium plan (global, user option and task option)
 - Mix upload between user and bot session with respect to file size (global, user option and task option)
+- Upload with custom layout multiple thubnmail (global, user option and task option)
+- Topics support
 
 ## Google Drive
 
@@ -152,6 +160,7 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 
 - Extract splits with or without password
 - Zip file/folder with or without password
+- Decompress zst files
 - Using 7-zip tool to extract with or without password all supported types:
 
 > ZIP, RAR, TAR, 7z, ISO, WIM, CAB, GZIP, BZIP2, APM, ARJ, CHM, CPIO, CramFS, DEB, DMG, FAT, HFS, LZH, LZMA, LZMA2,MBR,
@@ -192,6 +201,7 @@ Feel free to use and customize XYR-MLTB to fit your needs. For more information 
 - Bulk download from telegram txt file or text message contains links seperated by new line (task option)
 - Join splitted files that have splitted before by split(linux pkg) (task option)
 - Sample video Generator (task option)
+- Screenshots Generator (task option)
 - Ability to cancel upload/clone/archive/extract/split/queue (task option)
 - Cancel all buttons for choosing specific tasks status to cancel (global option)
 - Convert videos and audios to specific format with filter (task option)
@@ -362,6 +372,7 @@ quotes, even if it's `Int`, `Bool` or `List`.
 - `MIXED_LEECH`: Upload by user and bot session with respect to file size. Only in superChat. Default is `False`. `Bool`
 - `LEECH_FILENAME_PREFIX`: Add custom word to leeched file name. `Str`
 - `LEECH_DUMP_CHAT`: ID or USERNAME or PM(private message) to where files would be uploaded. `Int`|`Str`. Add `-100` before channel/superGroup id.
+- `THUMBNAIL_LAYOUT`: Thumbnail layout (widthxheight, 2x2, 3x3, 2x4, 4x4, ...) of how many photo arranged for the thumbnail.`Str`
 
 **7. qBittorrent/Aria2c/Sabnzbd**
 
