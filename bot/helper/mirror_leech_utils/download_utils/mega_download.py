@@ -119,7 +119,7 @@ class MegaAppListener(MegaListener):
 
     async def cancel_task(self):
         self.is_cancelled = True
-        await self.listener.onDownloadError("Download Canceled by user")
+        await self.listener.on_download_error("Download Canceled by user")
 
 
 class AsyncExecutor:
@@ -179,7 +179,7 @@ async def add_mega_download(listener, path):
         LOGGER.info(f"Added to Queue/Download: {listener.name}")
         async with task_dict_lock:
             task_dict[listener.mid] = QueueStatus(listener, size, gid, "Dl")
-        await listener.onDownloadStart()
+        await listener.on_download_start()
         if listener.multi <= 1:
             await send_status_message(listener.message)
         await event.wait()
@@ -202,7 +202,7 @@ async def add_mega_download(listener, path):
     if from_queue:
         LOGGER.info(f"Start Queued Download from Mega: {listener.name}")
     else:
-        await listener.onDownloadStart()
+        await listener.on_download_start()
         if listener.multi <= 1:
             await send_status_message(listener.message)
         LOGGER.info(f"Download from Mega: {listener.name}")
@@ -216,6 +216,6 @@ async def add_mega_download(listener, path):
         await sync_to_async(executor.do, folder_api.logout, ())
 
     if mega_listener.completed:
-        await listener.onDownloadComplete()
+        await listener.on_download_complete()
     elif (error := mega_listener.error) and mega_listener.is_cancelled:
-        await listener.onDownloadError(error)
+        await listener.on_download_error(error)
