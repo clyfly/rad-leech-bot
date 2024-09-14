@@ -29,7 +29,7 @@ async def cancel_task(_, message):
         message.text
     )
     try:
-        gid = msg.group(1) # type: ignore
+        gid = msg.group(1)  # type: ignore
     except AttributeError:
         gid = None
     if gid is not None:
@@ -54,7 +54,7 @@ async def cancel_task(_, message):
         if task is None:
             await send_message(message, "This is not an active task!")
             return
-    elif len(msg) == 1:
+    elif msg is None or len(msg) == 1:
         msg = (
             "Reply to an active Command message which was used to start the download"
             f" or send <code>/{BotCommands.CancelTaskCommand[0]} GID</code> to cancel it!"
