@@ -294,8 +294,6 @@ class TaskListener(TaskConfig):
                   buttons.url_button("ᴅʀɪᴠᴇ ʟɪɴᴋ", link, "header")
                 elif not link.startswith("https://drive.google.com/"):
                   buttons.url_button("ᴄʟᴏᴜᴅ ʟɪɴᴋ", link)
-                else:
-                  msg += f"\n\nPath: <code>{rclonePath}</code>"
                 if (
                     rclonePath
                     and (RCLONE_SERVE_URL := config_dict["RCLONE_SERVE_URL"])
@@ -326,7 +324,7 @@ class TaskListener(TaskConfig):
             else:
                 msg += f"\n<code>Path   : </code>{rclonePath}"
                 button = None
-            msg += f"\n<b><i>Click the button below to Download</b></i>"
+            msg += f"\n\n<b><i>Click the button below to Download</b></i>"
             await send_message(self.message, msg, button)
         if self.seed:
             if self.new_dir:
