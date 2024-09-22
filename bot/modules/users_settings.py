@@ -185,18 +185,17 @@ async def get_user_settings(from_user):
 
     buttons.data_button("Close", f"userset {user_id} close")
 
-    text = f"""<u>🔧 User Settings Overview</u>  
-<i><b>Only key settings are shown here. Click on specific menus for detailed configurations.</b></i>
+    text = f"""<u>User Settings</u>  
 
-<code>Leech Type        :</code> {ltype}  
-<code>Leech Split Size  :</code> {split_size}  
-<code>Equal Splits      :</code> {equal_splits}  
-<code>Leech Method      :</code> {leech_method}  
-<code>Media Group       :</code> {media_group}  
-<code>Upload Paths      :</code> {upload_paths}  
-<code>Stop Duplicate    :</code> {sd_msg}  
-<code>Default Upload    :</code> {du}  
-<code>YT-DLP Options    :</code> {ytopt}"""
+<code>Leech Type     :</code> {ltype}  
+<code>Split Size    :</code> {split_size}  
+<code>Equal Splits  :</code> {equal_splits}  
+<code>Leech Method  :</code> {leech_method}  
+<code>Media Group   :</code> {media_group}  
+<code>Upload Paths  :</code> {upload_paths}  
+<code>Stop Duplicate:</code> {sd_msg}  
+<code>Default Upload:</code> {du}  
+<code>YT-DLP Opts   :</code> {ytopt}"""
 
     return text, buttons.build_menu(2)
 
@@ -521,18 +520,19 @@ async def edit_user_settings(client, query):
 
         buttons.data_button("Back", f"userset {user_id} back")
         buttons.data_button("Close", f"userset {user_id} close")
-        text = f"""<u>Leech Settings for {name}</u>
-Leech Type is <b>{ltype}</b>
-Custom Thumbnail <b>{thumbmsg}</b>
-Leech Split Size is <b>{split_size}</b>
-Equal Splits is <b>{equal_splits}</b>
-Media Group is <b>{media_group}</b>
-Leech Prefix is <code>{escape(lprefix)}</code>
-Dump Chat is <code>{leech_dest}</code>
-Leech by <b>{leech_method}</b> session
-Mixed Leech is <b>{mixed_leech}</b>
-Thumbnail Layout is <b>{thumb_layout}</b>
+        text = f"""<u>Leech Settings for {name}</u>  
+<code>Leech Type      :</code> <b>{ltype}</b>  
+<code>Thumbnail       :</code> <b>{thumbmsg}</b>  
+<code>Split Size      :</code> <b>{split_size}</b>  
+<code>Equal Splits    :</code> <b>{equal_splits}</b>  
+<code>Media Group     :</code> <b>{media_group}</b>  
+<code>Prefix          :</code> <code>{escape(lprefix)}</code>  
+<code>Dump Chat       :</code> <code>{leech_dest}</code>  
+<code>Method          :</code> <b>{leech_method}</b>  
+<code>Mixed Leech     :</code> <b>{mixed_leech}</b>  
+<code>Thumbnail Layout:</code> <b>{thumb_layout}</b>  
 """
+
         await edit_message(message, text, buttons.build_menu(2))
     elif data[2] == "rclone":
         await query.answer()
@@ -548,10 +548,11 @@ Thumbnail Layout is <b>{thumb_layout}</b>
             rccpath = RP
         else:
             rccpath = "None"
-        text = f"""<u>Rclone Settings for {name}</u>
-Rclone Config <b>{rccmsg}</b>
-Rclone Path is <code>{rccpath}</code>"""
-        await edit_message(message, text, buttons.build_menu(1))
+        text = f"""<u>Rclone Settings for {name}</u>  
+<code>Config      :</code> <b>{rccmsg}</b>  
+<code>Path        :</code> <code>{rccpath}</code>  
+"""
+        await edit_message(message, text, buttons.build_menu(2))
     elif data[2] == "gdrive":
         await query.answer()
         buttons = ButtonMaker()
@@ -582,12 +583,13 @@ Rclone Path is <code>{rccpath}</code>"""
         else:
             gdrive_id = "None"
         index = user_dict["index_url"] if user_dict.get("index_url", False) else "None"
-        text = f"""<u>Gdrive Tools Settings for {name}</u>
-Gdrive Token <b>{tokenmsg}</b>
-Gdrive ID is <code>{gdrive_id}</code>
-Index URL is <code>{index}</code>
-Stop Duplicate is <b>{sd_msg}</b>"""
-        await edit_message(message, text, buttons.build_menu(1))
+        text = f"""<u>Gdrive Settings for {name}</u>  
+<code>Token           :</code> <b>{tokenmsg}</b>  
+<code>ID              :</code> <code>{gdrive_id}</code>  
+<code>Index URL       :</code> <code>{index}</code>  
+<code>Stop Duplicate  :</code> <b>{sd_msg}</b>  
+"""
+        await edit_message(message, text, buttons.build_menu(2))
     elif data[2] == "vthumb":
         await query.answer()
         await send_file(message, thumb_path, name)
@@ -603,7 +605,7 @@ Stop Duplicate is <b>{sd_msg}</b>"""
         await edit_message(
             message,
             "Send a photo to save it as custom thumbnail. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_thumb, pre_event=query)
         await event_handler(client, query, pfunc, True)
@@ -622,7 +624,7 @@ Format: key:value|key:value|key:value.
 Example: format:bv*+mergeall[vcodec=none]|nocheckcertificate:True
 Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L184'>FILE</a> or use this <a href='https://t.me/mltb_official_channel/177'>script</a> to convert cli arguments to api options.
         """
-        await edit_message(message, rmsg, buttons.build_menu(1))
+        await edit_message(message, rmsg, buttons.build_menu(2))
         pfunc = partial(set_option, pre_event=query, option="yt_opt")
         await event_handler(client, query, pfunc)
     elif data[2] == "lss":
@@ -635,7 +637,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         await edit_message(
             message,
             f"Send Leech split size in bytes. IS_PREMIUM_USER: {IS_PREMIUM_USER}. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_option, pre_event=query, option="split_size")
         await event_handler(client, query, pfunc)
@@ -649,7 +651,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         buttons.data_button("Back", f"userset {user_id} rclone")
         buttons.data_button("Close", f"userset {user_id} close")
         await edit_message(
-            message, "Send rclone.conf. Timeout: 60 sec", buttons.build_menu(1)
+            message, "Send rclone.conf. Timeout: 60 sec", buttons.build_menu(2)
         )
         pfunc = partial(add_rclone, pre_event=query)
         await event_handler(client, query, pfunc, document=True)
@@ -661,7 +663,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         buttons.data_button("Back", f"userset {user_id} rclone")
         buttons.data_button("Close", f"userset {user_id} close")
         rmsg = "Send Rclone Path. Timeout: 60 sec"
-        await edit_message(message, rmsg, buttons.build_menu(1))
+        await edit_message(message, rmsg, buttons.build_menu(2))
         pfunc = partial(set_option, pre_event=query, option="rclone_path")
         await event_handler(client, query, pfunc)
     elif data[2] == "token":
@@ -674,7 +676,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         buttons.data_button("Back", f"userset {user_id} gdrive")
         buttons.data_button("Close", f"userset {user_id} close")
         await edit_message(
-            message, "Send token.pickle. Timeout: 60 sec", buttons.build_menu(1)
+            message, "Send token.pickle. Timeout: 60 sec", buttons.build_menu(2)
         )
         pfunc = partial(add_token_pickle, pre_event=query)
         await event_handler(client, query, pfunc, document=True)
@@ -686,7 +688,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         buttons.data_button("Back", f"userset {user_id} gdrive")
         buttons.data_button("Close", f"userset {user_id} close")
         rmsg = "Send Gdrive ID. Timeout: 60 sec"
-        await edit_message(message, rmsg, buttons.build_menu(1))
+        await edit_message(message, rmsg, buttons.build_menu(2))
         pfunc = partial(set_option, pre_event=query, option="gdrive_id")
         await event_handler(client, query, pfunc)
     elif data[2] == "index":
@@ -697,7 +699,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         buttons.data_button("Back", f"userset {user_id} gdrive")
         buttons.data_button("Close", f"userset {user_id} close")
         rmsg = "Send Index URL. Timeout: 60 sec"
-        await edit_message(message, rmsg, buttons.build_menu(1))
+        await edit_message(message, rmsg, buttons.build_menu(2))
         pfunc = partial(set_option, pre_event=query, option="index_url")
         await event_handler(client, query, pfunc)
     elif data[2] == "leech_prefix":
@@ -714,7 +716,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         await edit_message(
             message,
             "Send Leech Filename Prefix. You can add HTML tags. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_option, pre_event=query, option="lprefix")
         await event_handler(client, query, pfunc)
@@ -734,7 +736,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         await edit_message(
             message,
             "Send leech destination ID/USERNAME/PM. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(3),
         )
         pfunc = partial(set_option, pre_event=query, option="leech_dest")
         await event_handler(client, query, pfunc)
@@ -754,7 +756,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         await edit_message(
             message,
             "Send thumbnail layout (widthxheight, 2x2, 3x3, 2x4, 4x4, ...). Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_option, pre_event=query, option="thumb_layout")
         await event_handler(client, query, pfunc)
@@ -774,7 +776,7 @@ Check all yt-dlp api options from this <a href='https://github.com/yt-dlp/yt-dlp
         await edit_message(
             message,
             "Send exluded extenions seperated by space without dot at beginning. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_option, pre_event=query, option="excluded_extensions")
         await event_handler(client, query, pfunc)
@@ -800,7 +802,7 @@ Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb |
         await edit_message(
             message,
             emsg,
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_option, pre_event=query, option="name_sub")
         await event_handler(client, query, pfunc)
@@ -823,7 +825,7 @@ Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb |
         await edit_message(
             message,
             "Add or remove upload path.\n",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
     elif data[2] == "new_path":
         await query.answer()
@@ -833,7 +835,7 @@ Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb |
         await edit_message(
             message,
             "Send path name(no space in name) which you will use it as a shortcut and the path/id seperated by space. You can add multiple names and paths separated by new line. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(set_option, pre_event=query, option="upload_paths")
         await event_handler(client, query, pfunc)
@@ -845,7 +847,7 @@ Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb |
         await edit_message(
             message,
             "Send paths names which you want to delete, separated by space. Timeout: 60 sec",
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
         pfunc = partial(delete_path, pre_event=query)
         await event_handler(client, query, pfunc)
@@ -862,7 +864,7 @@ Example: script/code/s | mirror/leech | tea/ /s | clone | cpu/ | \[mltb\]/mltb |
         await edit_message(
             message,
             msg,
-            buttons.build_menu(1),
+            buttons.build_menu(2),
         )
     elif data[2] == "reset":
         await query.answer()
