@@ -277,8 +277,13 @@ class TaskListener(TaskConfig):
                 msg += f"\n\n<b><i>Files has been sent to your DM.</i></b>"
                 await send_message(self.message, msg)
             else:
-                msg += f"\n\n<b><i>Files has been sent to your DC.</i></b>"
-                await send_message(self.message, msg)
+              fmsg = ""
+              for index, (link, name) in enumerate(files.items(), start=1):
+                fmsg = f"\n\n<b><i>Check Them Out: <a href='{link}'>{name}</a></i></b>"
+                break
+              if fmsg != "":
+                await send_message(self.message, msg + fmsg)
+                  
         else:
             msg += f"\n<code>Type   : </code>{mime_type}"
             if mime_type == "Folder":

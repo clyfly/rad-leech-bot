@@ -218,6 +218,8 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
         else:
             msg = f"No Active {status} Tasks!\n\n"
     buttons = ButtonMaker()
+    if is_user:
+        buttons.data_button("ʙᴏᴛ\nʀᴇꜰʀᴇꜱʜ", f"status {sid} ref", position="header")
     if not is_user:
         buttons.data_button("ʙᴏᴛ\nɪɴꜰᴏ", f"status {sid} ov", position="header")
     if len(tasks) > STATUS_LIMIT:
