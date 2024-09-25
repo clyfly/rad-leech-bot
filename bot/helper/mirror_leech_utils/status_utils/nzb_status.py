@@ -1,7 +1,7 @@
 from asyncio import gather
 
 from bot import LOGGER, sabnzbd_client, nzb_jobs, nzb_listener_lock
-from ...ext_utils.bot_utils import async_to_sync
+from ...ext_utils.bot_utils import async_to_sync, safemode_message
 from ...ext_utils.status_utils import (
     MirrorStatus,
     get_readable_file_size,
@@ -28,6 +28,7 @@ class SabnzbdStatus:
     def __init__(self, listener, gid, queued=False, status=None):
         self.queued = queued
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self.cstatus = status
         self._gid = gid
         self._info = None

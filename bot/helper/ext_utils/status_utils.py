@@ -19,19 +19,19 @@ from ..telegram_helper.button_build import ButtonMaker
 SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
 
 class MirrorStatus:
-    STATUS_UPLOADING = "Upload 📤"
-    STATUS_DOWNLOADING = "Download 📥"
-    STATUS_CLONING = "Clone 🧬"
-    STATUS_QUEUEDL = "QueueDl ⏳"
-    STATUS_QUEUEUP = "QueueUp ⏳"
-    STATUS_PAUSED = "Pause ⏸️"
-    STATUS_ARCHIVING = "Archive 🗃️"
-    STATUS_EXTRACTING = "Extract 📂"
-    STATUS_SPLITTING = "Split ✂️"
-    STATUS_CHECKING = "CheckUp 🔍"
-    STATUS_SEEDING = "Seed 🌱"
-    STATUS_SAMVID = "SamVid 🎥"
-    STATUS_CONVERTING = "Convert ♻️"
+    STATUS_UPLOADING = "Upload"
+    STATUS_DOWNLOADING = "Download"
+    STATUS_CLONING = "Clone"
+    STATUS_QUEUEDL = "QueueDl"
+    STATUS_QUEUEUP = "QueueUp"
+    STATUS_PAUSED = "Pause"
+    STATUS_ARCHIVING = "Archive️"
+    STATUS_EXTRACTING = "Extract"
+    STATUS_SPLITTING = "Split"
+    STATUS_CHECKING = "CheckUp"
+    STATUS_SEEDING = "Seed"
+    STATUS_SAMVID = "SamVid"
+    STATUS_CONVERTING = "Convert"
 
 STATUSES = {
     "ALL": "All",
@@ -163,15 +163,18 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
     ):
         tstatus = await sync_to_async(task.status) if status == "All" else status
         user_tag = task.listener.tag.replace("@", "").replace("_", " ")
-        cancel_task = (f"<b>/{BotCommands.CancelTaskCommand[0]}_{task.gid()}</b>")
-        if CustomFilters.authorized:
-            if task.listener.is_super_chat:
-                msg += f"<pre><b>{escape(f'{task.name()}')}</b></pre>"
-            else:
-                msg += f"<pre><b>AUTHORIZED USER TASK 🔐</b></pre>"
+        cancel_task = (f"<b>/{BotCommands.CancelTaskCommand}_{task.gid()}</b>")
+        if config_dict['SAFE_MODE']:
+          msg += f"<pre>{tstatus}: {task.safemode_msg}..</pre>"
+        else:
+          msg = (
+            f"<pre><a href='{task.listener.message.link}'>{tstatus}</a>: "
+            f"{escape(f'{task.name()}')}</pre>"
+            )
         if tstatus not in [
             MirrorStatus.STATUS_SEEDING,
             MirrorStatus.STATUS_QUEUEUP,
+            MirrorStatus.STATUS_QUEUEDL,
             MirrorStatus.STATUS_CONVERTING
         ]:
             progress = (
@@ -235,7 +238,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
                 buttons.data_button(label, f"status {sid} st {status_value}")
     button = buttons.build_menu(8)
     msg += (
-        "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
+        "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
         f"<b>CPU</b>: {cpu_percent()}% | "
         f"<b>FREE</b>: {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}\n"
         f"<b>RAM</b>: {virtual_memory().percent}% | "

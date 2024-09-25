@@ -1,4 +1,5 @@
 from httpx import AsyncClient
+from random import choice
 from asyncio.subprocess import PIPE
 from functools import partial, wraps
 from concurrent.futures import ThreadPoolExecutor
@@ -104,81 +105,105 @@ async def delete_links(message):
             LOGGER.error(str(e))
 
 async def set_commands(client):
-    await client.set_bot_commands([
+    commands = [
         BotCommand(
             f"{BotCommands.StartCommand}",
-            "Mulai bot dan dapatkan informasi dasar."
+            "Start the bot and get basic information."
         ),
         BotCommand(
             f"{BotCommands.MirrorCommand[0]}",
-            "atau /m Mulai mirror link dan file ke cloud."
+            f"or /{BotCommands.MirrorCommand[1]} Start mirroring links and files to the cloud."
         ),
         BotCommand(
             f"{BotCommands.QbMirrorCommand[0]}",
-            "atau /qbm Mulai mirror link dengan qBittorrent."
+            f"or /{BotCommands.QbMirrorCommand[1]} Start mirroring links with qBittorrent."
+        ),
+        BotCommand(
+            f"{BotCommands.JdMirrorCommand[0]}",
+            f"or /{BotCommands.JdMirrorCommand[1]} Start mirroring links with JDownloader."
         ),
         BotCommand(
             f"{BotCommands.YtdlCommand[0]}",
-            "atau /ytm Mirror link yang didukung yt-dlp."
+            f"or /{BotCommands.YtdlCommand[1]} Mirror links supported by yt-dlp."
         ),
         BotCommand(
             f"{BotCommands.LeechCommand[0]}",
-            "atau /l Mulai leech link dan file ke Telegram."
+            f"or /{BotCommands.LeechCommand[1]} Start leeching links and files to Telegram."
         ),
         BotCommand(
             f"{BotCommands.QbLeechCommand[0]}",
-            "atau /qbl Mulai leech link dengan qBittorrent."
+            f"or /{BotCommands.QbLeechCommand[1]} Leech links with qBittorrent."
+        ),
+        BotCommand(
+            f"{BotCommands.JdLeechCommand[0]}",
+            f"or /{BotCommands.JdLeechCommand[1]} Leech links with JDownloader."
         ),
         BotCommand(
             f"{BotCommands.YtdlLeechCommand[0]}",
-            "atau /ytl Leech link yang didukung yt-dlp."
+            f"or /{BotCommands.YtdlLeechCommand[1]} Leech links supported by yt-dlp."
         ),
         BotCommand(
             f"{BotCommands.CloneCommand}",
-            "Salin file atau folder ke Google Drive."
+            "Clone files or folders to Google Drive."
         ),
         BotCommand(
             f"{BotCommands.CountCommand}",
-            "[URL drive]: Hitung file atau folder di Google Drive."
+            "[Drive URL]: Count files or folders in Google Drive."
         ),
         BotCommand(
             f"{BotCommands.StatusCommand}",
-            "Dapatkan status semua tugas."
+            "Get the status of all tasks."
         ),
         BotCommand(
             f"{BotCommands.StatsCommand}",
-            "Periksa statistik bot."
+            "Check the bot's statistics."
         ),
         BotCommand(
-            f"{BotCommands.CancelTaskCommand[0]}",
-            "Batalkan tugas."
+            f"{BotCommands.CancelTaskCommand}",
+            "Cancel a task."
         ),
         BotCommand(
             f"{BotCommands.CancelAllCommand}",
-            "Batalkan semua tugas yang ditambahkan oleh Anda."
+            "Cancel all tasks added by you."
         ),
         BotCommand(
             f"{BotCommands.ListCommand}",
-            "Cari sesuatu di Google Drive."
+            "Search for something in Google Drive."
         ),
         BotCommand(
             f"{BotCommands.SearchCommand}",
-            "Cari sesuatu di situs torrent."
+            "Search for something on torrent sites."
         ),
         BotCommand(
             f"{BotCommands.UserSetCommand[0]}",
-            "Pengaturan pengguna."
+            "User settings."
         ),
         BotCommand(
             f"{BotCommands.HelpCommand}",
-            "Dapatkan bantuan lengkap."
+            "Get complete help."
         ),
         BotCommand(
             f"{BotCommands.SpeedCommand}",
-            "Periksa seberapa cepat internetmu."
+            "Check how fast your internet is."
         ),
-    ])
+    ]
 
+    await client.set_bot_commands(commands)
+
+def safemode_message():
+    messages = [
+        "The future feels so uncertain. Will I find my way?",
+        "What if my dreams fade away as life changes?",
+        "Sometimes, expectations feel too heavy. Will I know what I want?",
+        "I'm scared of making the wrong choices for my future.",
+        "Will I ever find true happiness, or will I always be searching?",
+        "The pressure to succeed is real. What if I fall short?",
+        "I worry that I’ll get stuck in a routine and miss out on life.",
+        "What if I choose a path and realize it's not for me?",
+        "Can I really trust myself to make the right decisions?",
+        "The future seems so far away, yet it feels like it’s closing in."
+    ]
+    return choice(messages)
 
 def arg_parser(items, arg_base):
     if not items:

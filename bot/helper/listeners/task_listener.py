@@ -277,13 +277,15 @@ class TaskListener(TaskConfig):
                 msg += f"\n\n<b><i>Files has been sent to your DM.</i></b>"
                 await send_message(self.message, msg)
             else:
-              fmsg = ""
-              for index, (link, name) in enumerate(files.items(), start=1):
-                fmsg = f"\n\n<b><i>Check Them Out: <a href='{link}'>{name}</a></i></b>"
-                break
-              if fmsg != "":
-                await send_message(self.message, msg + fmsg)
-                  
+                buttons = ButtonMaker()
+                for link, name in files.items():
+                  if link:
+                    msg += f"\n\n<b><i>Files has been sent to destination.</i></b>"
+                    buttons.url_button(f"ᴏᴘᴇɴ ᴅᴜᴍᴘ ᴄʜᴀᴛ 📥", link, "header")
+                    break
+                if buttons:
+                  button = buttons.build_menu(1)
+                  await send_message(self.message, msg, button)
         else:
             msg += f"\n<code>Type   : </code>{mime_type}"
             if mime_type == "Folder":

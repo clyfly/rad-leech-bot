@@ -7,11 +7,13 @@ from ...ext_utils.status_utils import (
     MirrorStatus,
     get_readable_time,
 )
+from ...ext_utils.bot_utils import safemode_message
 
 
 class ZipStatus:
     def __init__(self, listener, gid):
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self._size = self.listener.size
         self._gid = gid
         self._start_time = time()

@@ -25,7 +25,7 @@ from ..helper.telegram_helper.message_utils import (
 async def cancel_task(_, message):
     user_id = message.from_user.id if message.from_user else message.sender_chat.id
     msg = re_search(
-        rf"/(?:{BotCommands.CancelTaskCommand[0]}|{BotCommands.CancelTaskCommand[1]})(?:@{bot_name})?[_ ]([a-zA-Z0-9_-]+)(?:@{bot_name})?",
+        rf"/(?:{BotCommands.CancelTaskCommand})(?:@{bot_name})?[_ ]([a-zA-Z0-9_-]+)(?:@{bot_name})?",
         message.text
     )
     try:
@@ -206,7 +206,7 @@ bot.add_handler( # type: ignore
     MessageHandler(
         cancel_task,
         filters=regex(
-            rf"^/{BotCommands.CancelTaskCommand[1]}(_\w+)?(?!all)"
+            rf"^/{BotCommands.CancelTaskCommand}(_\w+)?(?!all)"
         ) & CustomFilters.authorized,
     )
 )

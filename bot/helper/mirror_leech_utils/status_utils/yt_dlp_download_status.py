@@ -4,6 +4,7 @@ from ...ext_utils.status_utils import (
     get_readable_file_size,
     get_readable_time,
 )
+from ...ext_utils.bot_utils import safemode_message
 
 
 class YtDlpStatus:
@@ -11,6 +12,7 @@ class YtDlpStatus:
         self._obj = obj
         self._gid = gid
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self._proccessed_bytes = 0
         self.engine = "Yt-DLP"
 

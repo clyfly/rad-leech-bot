@@ -2,6 +2,7 @@ from time import time
 
 from bot import LOGGER, subprocess_lock
 from ...ext_utils.files_utils import get_path_size
+from ...ext_utils.bot_utils import safemode_message
 from ...ext_utils.status_utils import (
     get_readable_file_size,
     MirrorStatus,
@@ -12,6 +13,7 @@ from ...ext_utils.status_utils import (
 class ExtractStatus:
     def __init__(self, listener, gid):
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self._size = self.listener.size
         self._gid = gid
         self._start_time = time()

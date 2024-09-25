@@ -1,10 +1,12 @@
 from bot import LOGGER
 from ...ext_utils.status_utils import get_readable_file_size, MirrorStatus
+from ...ext_utils.bot_utils import safemode_message
 
 
 class SampleVideoStatus:
     def __init__(self, listener, gid):
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self._gid = gid
         self._size = self.listener.size
         self.engine = "FFmpeg"

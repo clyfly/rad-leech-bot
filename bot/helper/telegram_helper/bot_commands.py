@@ -11,14 +11,14 @@ class _BotCommands:
         self.NzbMirrorCommand = [f"nzbmirror{x}", f"nzm{x}"]
         self.LeechCommand = [f"leech{x}", f"l{x}"]
         self.QbLeechCommand = [f"qbleech{x}", f"qbl{x}"]
-        self.JdLeechCommand = [f"jdLeech{x}", f"jdl{x}"]
+        self.JdLeechCommand = [f"jdleech{x}", f"jdl{x}"]
         self.YtdlLeechCommand = [f"ytdlleech{x}", f"ytl{x}"]
         self.NzbLeechCommand = [f"nzbleech{x}", f"nzl{x}"]
         self.CloneCommand = f"clone{x}"
         self.CountCommand = f"count{x}"
         self.SpeedCommand = f"speedtest{x}"
         self.DeleteCommand = f"del{x}"
-        self.CancelTaskCommand = [f"abort{x}", f"a{x}"]
+        self.CancelTaskCommand = f"cancel{x}"
         self.CancelAllCommand = f"cancelall{x}"
         self.ForceStartCommand = [f"forcestart{x}", f"fs{x}"]
         self.ListCommand = f"list{x}"

@@ -1,7 +1,7 @@
 from time import time
 
 from bot import aria2, LOGGER
-from ...ext_utils.bot_utils import sync_to_async
+from ...ext_utils.bot_utils import sync_to_async, safemode_message
 from ...ext_utils.status_utils import MirrorStatus, get_readable_time
 
 
@@ -19,6 +19,7 @@ class Aria2Status:
         self._gid = gid
         self._download = None
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self.queued = queued
         self.start_time = 0
         self.seeding = seeding

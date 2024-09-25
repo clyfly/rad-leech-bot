@@ -1,8 +1,9 @@
-from bot.helper.ext_utils.status_utils import (
+from ...ext_utils.status_utils import (
     get_readable_file_size,
     MirrorStatus,
     get_readable_time,
 )
+from ...ext_utils.bot_utils import safemode_message
 
 
 class MegaDownloadStatus:
@@ -11,7 +12,8 @@ class MegaDownloadStatus:
         self._size = size
         self._gid = gid
         self.listener = listener
-        self.engine = "MegaApi"
+        self.safemode_msg = safemode_message()
+        self.engine = "MegaSDK"
 
     def name(self):
         return self.listener.name

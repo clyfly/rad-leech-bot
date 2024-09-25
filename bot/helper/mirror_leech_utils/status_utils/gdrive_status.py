@@ -3,11 +3,13 @@ from bot.helper.ext_utils.status_utils import (
     get_readable_file_size,
     get_readable_time,
 )
+from bot.helper.ext_utils.bot_utils import safemode_message
 
 
 class GoogleDriveStatus:
     def __init__(self, listener, obj, gid, status):
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self._obj = obj
         self._size = self.listener.size
         self._gid = gid

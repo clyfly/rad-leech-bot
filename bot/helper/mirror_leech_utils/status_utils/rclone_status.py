@@ -1,4 +1,5 @@
 from ...ext_utils.status_utils import MirrorStatus
+from ...ext_utils.bot_utils import safemode_message
 
 
 class RcloneStatus:
@@ -7,6 +8,7 @@ class RcloneStatus:
         self._gid = gid
         self._status = status
         self.listener = listener
+        self.safemode_msg = safemode_message()
         self.engine ="Rclone"
 
     def gid(self):
