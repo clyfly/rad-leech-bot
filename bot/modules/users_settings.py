@@ -122,7 +122,7 @@ async def get_user_settings(from_user):
     else:
         thumb_layout = "None"
 
-    buttons.data_button("Leech", f"userset {user_id} leech")
+    buttons.data_button("Leech Settings", f"userset {user_id} leech")
 
     buttons.data_button("Rclone Tools", f"userset {user_id} rclone")
     rccmsg = "Exists" if await aiopath.exists(rclone_conf) else "Not Exists"
@@ -185,9 +185,9 @@ async def get_user_settings(from_user):
 
     buttons.data_button("Close", f"userset {user_id} close")
 
-    text = f"""<u>User Settings</u>  
+    text = f"""<u>{name}'s User Settings</u>  
 
-<code>Leech Type     :</code> {ltype}  
+<code>Leech Type    :</code> {ltype}  
 <code>Split Size    :</code> {split_size}  
 <code>Equal Splits  :</code> {equal_splits}  
 <code>Leech Method  :</code> {leech_method}  
@@ -195,7 +195,8 @@ async def get_user_settings(from_user):
 <code>Upload Paths  :</code> {upload_paths}  
 <code>Stop Duplicate:</code> {sd_msg}  
 <code>Default Upload:</code> {du}  
-<code>YT-DLP Opts   :</code> {ytopt}"""
+<code>YT-DLP Opts   :</code> {ytopt}
+<code>Exclude Exts  :</code> {ex_ex}"""
 
     return text, buttons.build_menu(2)
 
@@ -557,7 +558,7 @@ async def edit_user_settings(client, query):
         await query.answer()
         buttons = ButtonMaker()
         buttons.data_button("token.pickle", f"userset {user_id} token")
-        buttons.data_button("Default Gdrive ID", f"userset {user_id} gdid")
+        buttons.data_button("Default ID", f"userset {user_id} gdid")
         buttons.data_button("Index URL", f"userset {user_id} index")
         if (
             user_dict.get("stop_duplicate", False)
@@ -565,12 +566,12 @@ async def edit_user_settings(client, query):
             and config_dict["STOP_DUPLICATE"]
         ):
             buttons.data_button(
-                "Disable Stop Duplicate", f"userset {user_id} stop_duplicate false"
+                "Allow Duplicate", f"userset {user_id} stop_duplicate false"
             )
             sd_msg = "Enabled"
         else:
             buttons.data_button(
-                "Enable Stop Duplicate", f"userset {user_id} stop_duplicate true"
+                "Stop Duplicate", f"userset {user_id} stop_duplicate true"
             )
             sd_msg = "Disabled"
         buttons.data_button("Back", f"userset {user_id} back")

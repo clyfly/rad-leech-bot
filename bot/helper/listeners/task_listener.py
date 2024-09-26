@@ -13,6 +13,7 @@ from bot import (
     LOGGER,
     DATABASE_URL,
     config_dict,
+    bot_name,
     non_queued_up,
     non_queued_dl,
     queued_up,
@@ -273,15 +274,15 @@ class TaskListener(TaskConfig):
             msg += f"\n<code>Mode   : </code>Leech"
             if mime_type != 0:
                 msg += f"\n<code>Corrupt:  </code>{mime_type}"
+            buttons = ButtonMaker()
             if not files:
-                msg += f"\n\n<b><i>Files has been sent to your DM.</i></b>"
-                await send_message(self.message, msg)
+                buttons.url_button("Open Inbox 📬", f"https://t.me/{bot_name}")
+                button = buttons.build_menu(1)
+                await send_message(self.message, msg, button)
             else:
-                buttons = ButtonMaker()
                 for link, name in files.items():
                   if link:
-                    msg += f"\n\n<b><i>Files has been sent to destination.</i></b>"
-                    buttons.url_button(f"ᴏᴘᴇɴ ᴅᴜᴍᴘ ᴄʜᴀᴛ 📥", link, "header")
+                    buttons.url_button(f"Open Dump Chat ️📂", link, "header")
                     break
                 if buttons:
                   button = buttons.build_menu(1)
@@ -298,9 +299,9 @@ class TaskListener(TaskConfig):
             ):
                 buttons = ButtonMaker()
                 if link.startswith("https://drive.google.com/") and not config_dict["DISABLE_DRIVE_LINK"]:
-                  buttons.url_button("ᴅʀɪᴠᴇ ʟɪɴᴋ", link, "header")
+                  buttons.url_button("Drive link ♻️", link, "header")
                 elif not link.startswith("https://drive.google.com/"):
-                  buttons.url_button("ᴄʟᴏᴜᴅ ʟɪɴᴋ", link)
+                  buttons.url_button("Cloud link ☁️", link)
                 if (
                     rclonePath
                     and (RCLONE_SERVE_URL := config_dict["RCLONE_SERVE_URL"])
@@ -311,7 +312,7 @@ class TaskListener(TaskConfig):
                     share_url = f"{RCLONE_SERVE_URL}/{remote}/{url_path}"
                     if mime_type == "Folder":
                         share_url += "/"
-                    buttons.url_button("ʀᴄʟᴏɴᴇ ʟɪɴᴋ", share_url)
+                    buttons.url_button("Rclone link 🔗", share_url)
                 if not rclonePath and dir_id:
                     INDEX_URL = ""
                     if self.private_link:
@@ -323,10 +324,10 @@ class TaskListener(TaskConfig):
                         if config_dict["DISABLE_DRIVE_LINK"]:
                           buttons.url_button("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url, "header")
                         else:
-                          buttons.url_button("ᴅɪʀᴇᴄᴛ ʟɪɴᴋ", share_url)
+                          buttons.url_button("Direct link ⚡", share_url)
                         if mime_type.startswith(("image", "video", "audio")):
                             share_urls = f"{INDEX_URL}findpath?id={dir_id}&view=true"
-                            buttons.url_button("ᴠɪᴇᴡ ʟɪɴᴋ", share_urls)
+                            buttons.url_button("View link 🌐", share_urls)
                 button = buttons.build_menu(2)
             else:
                 msg += f"\n<code>Path   : </code>{rclonePath}"
