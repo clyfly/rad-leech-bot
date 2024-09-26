@@ -113,6 +113,8 @@ def direct_link_generator(link):
             "streamtape.co",
             "streamtape.cc",
             "streamtape.to",
+            "watchadsontape.com",
+            "adblockplustape.xyz",
             "streamtape.net",
             "streamta.pe",
             "streamtape.xyz",
